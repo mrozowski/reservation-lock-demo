@@ -1,0 +1,7 @@
+
+
+## Spring Boot Docker Compose
+spring:
+  docker:
+    compose:
+      file: './seat-reservation/docker-compose.yaml'
