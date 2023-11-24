@@ -1,0 +1,100 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1.0.0.0
+      author: smrozowski
+      changes:
+        - createTable:
+            tableName: trip
+            columns:
+              - column:
+                  name: id
+                  type: varchar(200)
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: departure
+                  type: varchar(200)
+              - column:
+                  name: destination
+                  type: varchar(200)
+              - column:
+                  name: date
+                  type: date
+              - column:
+                  name: price
+                  type: integer
+
+  - changeSet:
+      id: 1.0.0.1
+      author: smrozowski
+      changes:
+        - createTable:
+            tableName: seat
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: trip_id
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fd_seat_trip
+                    references: trip(id)
+              - column:
+                  name: seat_number
+                  type: varchar(5)
+              - column:
+                  name: status
+                  type: varchar(50)
+              - column:
+                  name: lock_expiration_time
+                  type: timestamp
+
+  - changeSet:
+      id: 1.0.0.2
+      author: smrozowski
+      changes:
+        - createTable:
+            tableName: reservation
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: trip_id
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fd_reservation_trip
+                    references: trip(id)
+              - column:
+                  name: seat_id
+                  type: int
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fd_reservation_seat
+                    references: seat(id)
+              - column:
+                  name: customer_name
+                  type: varchar(200)
+              - column:
+                  name: created_at
+                  type: timestamp
+              - column:
+                  name: payment_status
+                  type: varchar(50)
+
+  - changeSet:
+      id: 1.0.0.3
+      author: smrozowski
+      context: dev
+      changes:
+        - sqlFile:
+            path: db/changelog/dev-sql-script/script.sql

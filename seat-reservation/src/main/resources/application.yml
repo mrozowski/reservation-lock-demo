@@ -1,7 +1,8 @@
 
-
 ## Spring Boot Docker Compose
 spring:
   docker:
     compose:
       file: './seat-reservation/docker-compose.yaml'
+  liquibase:
+    contexts: '${spring.profiles.active}'
