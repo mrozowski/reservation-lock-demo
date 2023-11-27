@@ -19,7 +19,7 @@ databaseChangeLog:
                   type: varchar(200)
               - column:
                   name: date
-                  type: date
+                  type: timestamp
               - column:
                   name: price
                   type: integer

@@ -1,11 +1,21 @@
 package com.mrozowski.seatreservation.adapter.outgoing;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Data;
 
 import java.time.OffsetDateTime;
 
-@Table("trip")
-record TripEntity(@Id String id, String departure, String destination, OffsetDateTime date, int price) {
+@Data
+@Entity
+@Table(name = "trip")
+class TripEntity {
 
+  @Id
+  private String id;
+  private String departure;
+  private String destination;
+  private OffsetDateTime date;
+  private int price;
 }
