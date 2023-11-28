@@ -1,0 +1,16 @@
+plugins {
+  id 'java'
+}
+
+allprojects {
+  repositories {
+    mavenCentral()
+  }
+
+  group = 'com.mrozowski'
+  version = '1.0-SNAPSHOT'
+
+  tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+  }
+}
