@@ -1,6 +1,9 @@
-
 ## Spring Boot Docker Compose
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:24881/resdb
+    username: resdb
+    password: resdb
   docker:
     compose:
       file: './seat-reservation/docker-compose.yaml'

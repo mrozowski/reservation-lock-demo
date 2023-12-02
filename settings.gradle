@@ -1,1 +1,1 @@
-include ':seat-reservation', ':frontend' //, ':e2e-tests'
+include ':seat-reservation', ':frontend'

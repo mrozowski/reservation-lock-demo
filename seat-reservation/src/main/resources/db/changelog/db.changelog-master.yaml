@@ -94,7 +94,7 @@ databaseChangeLog:
   - changeSet:
       id: 1.0.0.3
       author: smrozowski
-      context: dev
+      context: test
       changes:
         - sqlFile:
             path: db/changelog/dev-sql-script/script.sql
