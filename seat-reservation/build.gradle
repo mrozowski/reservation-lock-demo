@@ -38,6 +38,7 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-testcontainers'
   testImplementation 'org.spockframework:spock-core:2.4-M1-groovy-4.0'
   testImplementation 'org.apache.groovy:groovy-json:4.0.15'
+  testImplementation 'org.apache.groovy:groovy-templates:4.0.15'
   testImplementation 'org.testcontainers:spock:1.19.3'
   testImplementation 'org.testcontainers:postgresql'
 }
@@ -57,7 +58,7 @@ tasks.register('e2e-test') {
       args = [
           '--plugin', 'pretty',
           '--glue', 'com.mrozowski.seatreservation',
-          'src/test/resources']
+          'src/test/resources/features']
     }
   }
 }

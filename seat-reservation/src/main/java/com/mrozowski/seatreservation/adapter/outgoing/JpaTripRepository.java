@@ -14,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +38,11 @@ class JpaTripRepository implements TripRepository {
       var predicates = new ArrayList<Predicate>();
 
       for (FilterCriteria filter : filters) {
-        predicates.add(buildPredicate(root, criteriaBuilder, filter));
+        if (filter.name().equals(DATE)) {
+          predicates.add(buildPredicateForDate(root, criteriaBuilder, filter));
+        } else {
+          predicates.add(buildPredicate(root, criteriaBuilder, filter));
+        }
       }
 
       return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
@@ -46,5 +51,10 @@ class JpaTripRepository implements TripRepository {
 
   private Predicate buildPredicate(Root<TripEntity> root, CriteriaBuilder criteriaBuilder, FilterCriteria filter) {
     return criteriaBuilder.equal(root.get(filter.name()), filter.value());
+  }
+
+  private Predicate buildPredicateForDate(Root<TripEntity> root, CriteriaBuilder criteriaBuilder,
+                                          FilterCriteria filter) {
+    return criteriaBuilder.equal(criteriaBuilder.function("DATE", Date.class, root.get(DATE)), filter.value());
   }
 }

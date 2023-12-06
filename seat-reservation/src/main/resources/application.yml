@@ -4,6 +4,8 @@ spring:
     url: jdbc:postgresql://localhost:24881/resdb
     username: resdb
     password: resdb
+  jpa:
+    show-sql: true
   docker:
     compose:
       file: './seat-reservation/docker-compose.yaml'

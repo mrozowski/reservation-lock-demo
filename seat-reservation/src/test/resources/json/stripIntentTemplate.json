@@ -1,0 +1,10 @@
+{
+  "amount": $price,
+  "currency": "usd",
+  "description": "Reservation Payment",
+  "reservationId": "$reservation",
+  "metadata": {
+    "customerName": "John Doe",
+    "email": "john.doe@example.com"
+  }
+}

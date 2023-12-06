@@ -68,6 +68,11 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
               - column:
+                  name: reference
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
                   name: trip_id
                   type: varchar(200)
                   constraints:

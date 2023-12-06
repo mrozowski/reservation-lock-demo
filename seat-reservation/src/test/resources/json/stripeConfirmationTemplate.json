@@ -1,0 +1,11 @@
+{
+  "id": "$paymentId",
+  "object": "payment_intent",
+  "amount": $price,
+  "client_secret": "$clientSecret",
+  "created": "$createdAt",
+  "currency": "usd",
+  "description": "Created by stripe.com/docs demo",
+  "payment_method_types": ["card"],
+  "status": "succeeded"
+}

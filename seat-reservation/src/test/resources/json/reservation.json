@@ -1,0 +1,9 @@
+{
+  "name": "John",
+  "surname": "Doe",
+  "phone": "500123456",
+  "email": "john.doe@example.com",
+  "tripId": "WJ311823F",
+  "seatNumber": "A15",
+  "price": 250.00
+}

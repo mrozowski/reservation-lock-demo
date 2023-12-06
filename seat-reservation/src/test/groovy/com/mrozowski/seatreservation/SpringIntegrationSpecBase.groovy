@@ -15,7 +15,9 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @Testcontainers
 @SpringBootTest(webEnvironment = RANDOM_PORT)
 @ActiveProfiles("test")
-class SpringIntegrationSpec extends Specification {
+class SpringIntegrationSpecBase extends Specification {
+
+  private static final String BASE_URL = "http://localhost"
 
   @LocalServerPort
   int port
@@ -31,5 +33,9 @@ class SpringIntegrationSpec extends Specification {
     registry.add("spring.datasource.password", postgresqlContainer::getPassword)
     // Set liquibase contexts to "test" to run custom sql that fills DB with test data
     registry.add("spring.liquibase.contexts", () -> "test")
+  }
+
+  def baseUrl(){
+    return "${BASE_URL}:${port}"
   }
 }
