@@ -29,11 +29,11 @@ class TripControllerSpec extends Specification {
 
     expect:
     mockMvc.perform(get("/v1/trips/search")
-        .param(Fixtures.DATE, Fixtures.DATE_VALUE)
-        .param(Fixtures.DEPARTURE, Fixtures.DEPARTURE_VALUE)
-        .param(Fixtures.DESTINATION, Fixtures.DESTINATION_VALUE)
-        .param(Fixtures.PAGE, Fixtures.PAGE_NUMBER)
-        .param(Fixtures.SIZE, Fixtures.SIZE_VALUE))
+        .param(Fixtures.DATE_KEY, Fixtures.DATE)
+        .param(Fixtures.DEPARTURE_KEY, Fixtures.DEPARTURE)
+        .param(Fixtures.DESTINATION_KEY, Fixtures.DESTINATION)
+        .param(Fixtures.PAGE_KEY, Fixtures.PAGE_NUMBER)
+        .param(Fixtures.SIZE_KEY, Fixtures.SIZE))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON))
   }

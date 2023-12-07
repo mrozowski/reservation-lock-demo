@@ -5,6 +5,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CrudTripRepository extends PagingAndSortingRepository<TripEntity, String>,
+interface PaginationTripRepository extends PagingAndSortingRepository<TripEntity, String>,
     JpaSpecificationExecutor<TripEntity> {
 }

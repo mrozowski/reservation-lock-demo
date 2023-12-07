@@ -40,7 +40,7 @@ class TripController {
       @RequestParam(defaultValue = "") String destination,
       @RequestParam(defaultValue = "1") int page,
       @RequestParam(defaultValue = "30") int size) {
-    log.info("Receive request for trips with date={}, departure={}, destination={}", date, departure, destination);
+    log.info("Received request for trips with date={}, departure={}, destination={}", date, departure, destination);
 
     var filters = new ArrayList<FilterCriteria>();
     addFilterIfNotBlank(filters, DEPARTURE, departure, EQUAL);

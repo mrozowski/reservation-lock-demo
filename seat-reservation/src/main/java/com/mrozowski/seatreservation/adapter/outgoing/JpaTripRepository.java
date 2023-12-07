@@ -22,15 +22,15 @@ import java.util.List;
 @RequiredArgsConstructor
 class JpaTripRepository implements TripRepository {
 
-  public static final String DATE = "date";
-  private final CrudTripRepository repository;
+  private static final String DATE = "date";
+  private final PaginationTripRepository tripRepository;
   private final JpaTripMapper mapper;
 
   @Override
   public Page<Trip> getTripList(TripFilterCommand command) {
     var pageable = PageRequest.of(command.page(), command.pageSize(), Sort.by(DATE));
     var specification = buildSpecification(command.filters());
-    return repository.findAll(specification, pageable).map(mapper::toTrip);
+    return tripRepository.findAll(specification, pageable).map(mapper::toTrip);
   }
 
   private Specification<TripEntity> buildSpecification(List<FilterCriteria> filters) {
