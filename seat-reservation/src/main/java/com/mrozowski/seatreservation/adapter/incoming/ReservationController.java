@@ -1,6 +1,7 @@
 package com.mrozowski.seatreservation.adapter.incoming;
 
 import com.mrozowski.seatreservation.domain.ReservationFacade;
+import com.mrozowski.seatreservation.domain.model.CancellationMessage;
 import com.mrozowski.seatreservation.domain.model.ReservationDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,12 @@ class ReservationController {
         .getReservationDetails(reference, name)
         .map(ResponseEntity::ok)
         .orElseThrow(() -> new ResourceNotFoundException("Reservation with reference=" + reference + " not found"));
+  }
+
+  @DeleteMapping("/cancel")
+  ResponseEntity<CancellationMessage> cancelReservation(@RequestParam String reference, @RequestParam String name) {
+    log.debug("Received request to cancel reservation with reference={}", reference);
+    return ResponseEntity.ok(reservationFacade.cancelReservation(reference, name));
   }
 
   @ExceptionHandler(ResourceNotFoundException.class)

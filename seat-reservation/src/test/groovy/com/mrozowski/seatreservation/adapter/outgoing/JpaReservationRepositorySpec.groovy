@@ -1,6 +1,7 @@
 package com.mrozowski.seatreservation.adapter.outgoing
 
 import com.mrozowski.seatreservation.domain.model.ReservationDetails
+import org.hibernate.HibernateException
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -44,5 +45,44 @@ class JpaReservationRepositorySpec extends Specification {
       it.destination() == destination
       it.departure() == departure
     }
+  }
+
+  def "should cancel reservation"() {
+    given:
+    def reference = "someReference"
+    def name = "someName"
+    repository.cancelReservation(reference, name) >> 1
+
+    when:
+    def result = underTest.cancelReservation(reference, name)
+
+    then:
+    result.status().toString() == "SUCCESS"
+  }
+
+  def "should cancel reservation"() {
+    given:
+    def reference = "someReference"
+    def name = "someName"
+    repository.cancelReservation(reference, name) >> 0
+
+    when:
+    def result = underTest.cancelReservation(reference, name)
+
+    then:
+    result.status().toString() == "NOT_FOUND"
+  }
+
+  def "should cancel reservation"() {
+    given:
+    def reference = "someReference"
+    def name = "someName"
+    repository.cancelReservation(reference, name) >> { throw new HibernateException("Some error", new Throwable()) }
+
+    when:
+    def result = underTest.cancelReservation(reference, name)
+
+    then:
+    result.status().toString() == "ERROR"
   }
 }

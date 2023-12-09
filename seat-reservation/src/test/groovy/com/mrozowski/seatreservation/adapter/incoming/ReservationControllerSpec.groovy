@@ -8,16 +8,16 @@ import spock.lang.Specification
 
 import java.time.format.DateTimeFormatter
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
 class ReservationControllerSpec extends Specification {
 
+
   private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")
   private MockMvc mockMvc
-  def reservationFacade = Mock(ReservationFacade)
+  private ReservationFacade reservationFacade = Mock()
   def underTest = new ReservationController(reservationFacade)
 
   def setup() {
@@ -58,5 +58,19 @@ class ReservationControllerSpec extends Specification {
         .andExpect(jsonPath('$.message').isNotEmpty())
         .andExpect(jsonPath('$.timestamp').isNotEmpty())
         .andExpect(jsonPath('$.path').value("/v1/reservations/details"))
+  }
+
+  def "should cancel reservation and return CancellationMessage"() {
+    given:
+    reservationFacade.cancelReservation(Fixtures.REFERENCE_NUMBER, Fixtures.CUSTOMER_NAME) >> Fixtures.CANCELLATION_MESSAGE
+
+    expect:
+    mockMvc.perform(delete("/v1/reservations/cancel")
+        .param(Fixtures.REFERENCE_KEY, Fixtures.REFERENCE_NUMBER)
+        .param(Fixtures.CUSTOMER_NAME_KEY, Fixtures.CUSTOMER_NAME))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(jsonPath('$.status').value(Fixtures.SUCCESS))
+        .andExpect(jsonPath('$.message').isNotEmpty())
   }
 }

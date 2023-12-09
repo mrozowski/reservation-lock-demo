@@ -1,5 +1,6 @@
 package com.mrozowski.seatreservation.adapter.incoming
 
+import com.mrozowski.seatreservation.domain.model.CancellationMessage
 import com.mrozowski.seatreservation.domain.model.ReservationDetails
 import com.mrozowski.seatreservation.domain.model.Trip
 import org.springframework.data.domain.Page
@@ -28,6 +29,7 @@ class Fixtures {
   static final String TRIP_ID = "AB123T"
 
   static final String NOT_FOUND_ERROR = "NOT_FOUND"
+  static final String SUCCESS = "SUCCESS"
 
   static final String REFERENCE_KEY = "reference"
   static final String CUSTOMER_NAME_KEY = "name"
@@ -62,4 +64,6 @@ class Fixtures {
       .offsetDateTime(OFFSET_DATE_TIME)
       .status(CONFIRMED)
       .build()
+
+  static CancellationMessage CANCELLATION_MESSAGE = CancellationMessage.successful(Fixtures.REFERENCE_NUMBER)
 }

@@ -1,6 +1,7 @@
 package com.mrozowski.seatreservation.domain;
 
 import com.mrozowski.seatreservation.domain.command.TripFilterCommand;
+import com.mrozowski.seatreservation.domain.model.CancellationMessage;
 import com.mrozowski.seatreservation.domain.model.ReservationDetails;
 import com.mrozowski.seatreservation.domain.model.Trip;
 import com.mrozowski.seatreservation.domain.port.ReservationRepository;
@@ -24,5 +25,9 @@ public class ReservationFacade {
 
   public Optional<ReservationDetails> getReservationDetails(String reference, String customerName) {
     return reservationRepository.getReservationDetails(reference, customerName);
+  }
+
+  public CancellationMessage cancelReservation(String reference, String name) {
+    return reservationRepository.cancelReservation(reference, name);
   }
 }

@@ -73,6 +73,7 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
 
       restApiClient.assertStatusCode(200)
       scenarioContext.put(CANCEL_RESERVATION_RESPONSE_KEY, restApiClient.responseAsText)
+      scenarioContext.put(REFERENCE_NUMBER_KEY, reference)
     } catch (Exception e) {
       print "There was an error during REST call: ${e.message}"
     }
@@ -80,12 +81,13 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
 
   @Then("the response should have information about successful cancellation")
   def theResponseShouldBeSuccessCancellation() {
-    def jsonBodyResponse = scenarioContext.get(RESERVATION_DETAILS_RESPONSE_KEY) as String
+    def reference = scenarioContext.get(REFERENCE_NUMBER_KEY) as String
+    def jsonBodyResponse = scenarioContext.get(CANCEL_RESERVATION_RESPONSE_KEY) as String
     log.info("Validating json response: {}", jsonBodyResponse)
 
-    def response = new JsonSlurper().parseText(jsonBodyResponse) as String
-    assert response == "Reservation successfully cancelled"
-    // TODO: Implement other assertions
+    def response = new JsonSlurper().parseText(jsonBodyResponse)
+    assert response.status == "SUCCESS"
+    assert response.message == "Reservation with referenceNr: '${reference}' cancelled successfully"
 
     log.info("The response is valid")
   }

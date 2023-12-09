@@ -1,6 +1,9 @@
 package com.mrozowski.seatreservation.adapter.outgoing;
 
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -9,4 +12,10 @@ import java.util.Optional;
 interface CrudReservationRepository extends CrudRepository<ReservationEntity, Long> {
 
   Optional<ReservationEntity> findFirstByReferenceAndCustomerName(String reference, String customerName);
+
+  @Modifying
+  @Query("UPDATE ReservationEntity r SET r.paymentStatus = 'CANCEL' WHERE r.reference = :reference AND r.customerName" +
+      " = :customerName")
+  int cancelReservation(@Param("reference") String reference, @Param("customerName") String customerName);
+
 }

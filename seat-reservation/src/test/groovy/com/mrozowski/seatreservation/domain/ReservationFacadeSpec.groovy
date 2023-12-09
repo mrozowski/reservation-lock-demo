@@ -40,4 +40,15 @@ class ReservationFacadeSpec extends Specification {
     result.isPresent()
     result.get() == Fixtures.RESERVATION_DETAILS
   }
+
+  def "should cancel reservation"() {
+    given:
+    reservationRepository.cancelReservation(Fixtures.REFERENCE_NUMBER, Fixtures.CUSTOMER_NAME) >> Fixtures.CANCELLATION_MESSAGE
+
+    when:
+    def result = underTest.cancelReservation(Fixtures.REFERENCE_NUMBER, Fixtures.CUSTOMER_NAME)
+
+    then:
+    result == Fixtures.CANCELLATION_MESSAGE
+  }
 }

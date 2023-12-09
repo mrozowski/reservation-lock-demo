@@ -1,5 +1,6 @@
 package com.mrozowski.seatreservation.domain
 
+import com.mrozowski.seatreservation.domain.model.CancellationMessage
 import com.mrozowski.seatreservation.domain.model.ReservationDetails
 import com.mrozowski.seatreservation.domain.model.Trip
 import org.springframework.data.domain.Page
@@ -47,4 +48,6 @@ class Fixtures {
       .offsetDateTime(OFFSET_DATE_TIME)
       .status(CONFIRMED)
       .build()
+
+  static CancellationMessage CANCELLATION_MESSAGE = CancellationMessage.successful(Fixtures.REFERENCE_NUMBER)
 }
