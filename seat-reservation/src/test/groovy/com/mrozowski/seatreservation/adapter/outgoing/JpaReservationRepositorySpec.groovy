@@ -28,7 +28,7 @@ class JpaReservationRepositorySpec extends Specification {
         reference: reference,
         paymentStatus: "CONFIRMED",
         trip: new TripEntity(id: "ABC123", departure: departure, destination: destination, date: date),
-        seat: new SeatEntity(id: 1L, trip: new TripEntity(), seatNumber: seatNumber, status: "RESERVED")
+        seat: new SeatEntity(id: 1L, tripId: "tripId", seatNumber: seatNumber, status: "RESERVED")
     )
 
     repository.findFirstByReferenceAndCustomerName(reference, name) >> Optional.of(entity)

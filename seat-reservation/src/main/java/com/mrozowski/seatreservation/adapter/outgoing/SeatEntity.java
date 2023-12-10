@@ -8,19 +8,24 @@ import java.time.OffsetDateTime;
 @Data
 @Entity
 @Table(name = "seat")
-public class SeatEntity {
+class SeatEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @ManyToOne
-  @JoinColumn(name = "trip_id", referencedColumnName = "id")
-  private TripEntity trip;
+  private String tripId;
 
   private String seatNumber;
 
-  private String status;
+  @Enumerated(EnumType.STRING)
+  private SeatEntityStatus status;
 
   private OffsetDateTime lockExpirationTime;
+
+  enum SeatEntityStatus {
+    AVAILABLE,
+    LOCKED,
+    RESERVED
+  }
 }

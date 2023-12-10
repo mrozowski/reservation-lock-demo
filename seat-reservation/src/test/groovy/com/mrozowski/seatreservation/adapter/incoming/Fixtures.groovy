@@ -11,7 +11,7 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
-import static com.mrozowski.seatreservation.domain.model.ReservationDetails.ReservationStatus.*
+import static com.mrozowski.seatreservation.domain.model.ReservationDetails.ReservationStatus.CONFIRMED
 
 class Fixtures {
 

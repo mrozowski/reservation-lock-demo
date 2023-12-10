@@ -9,13 +9,13 @@ import java.time.OffsetDateTime;
 public record ReservationDetails(String reference,
                                  String departure,
                                  String destination,
-                                 @JsonFormat(pattern="yyyy-MM-dd'T'HH:mm:ss'Z'") OffsetDateTime offsetDateTime,
+                                 @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'") OffsetDateTime offsetDateTime,
                                  String seatNumber,
                                  String customerName,
                                  ReservationStatus status) {
 
 
-  public static enum ReservationStatus{
+  public enum ReservationStatus {
     PENDING,
     CANCELED,
     CONFIRMED

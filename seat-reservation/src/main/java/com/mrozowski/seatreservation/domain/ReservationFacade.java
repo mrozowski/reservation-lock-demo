@@ -4,6 +4,7 @@ import com.mrozowski.seatreservation.domain.command.TripFilterCommand;
 import com.mrozowski.seatreservation.domain.model.CancellationMessage;
 import com.mrozowski.seatreservation.domain.model.ReservationDetails;
 import com.mrozowski.seatreservation.domain.model.Trip;
+import com.mrozowski.seatreservation.domain.model.TripSeatDetails;
 import com.mrozowski.seatreservation.domain.port.ReservationRepository;
 import com.mrozowski.seatreservation.domain.port.TripRepository;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +30,9 @@ public class ReservationFacade {
 
   public CancellationMessage cancelReservation(String reference, String name) {
     return reservationRepository.cancelReservation(reference, name);
+  }
+
+  public TripSeatDetails getSeatList(String tripId) {
+    return tripRepository.getSeatList(tripId);
   }
 }

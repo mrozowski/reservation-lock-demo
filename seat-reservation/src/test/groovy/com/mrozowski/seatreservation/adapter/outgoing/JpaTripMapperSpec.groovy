@@ -2,8 +2,9 @@ package com.mrozowski.seatreservation.adapter.outgoing
 
 import spock.lang.Specification
 import spock.lang.Subject
+import spock.lang.Unroll
 
-import java.time.OffsetDateTime
+import static com.mrozowski.seatreservation.domain.model.TripSeatDetails.Seat
 
 class JpaTripMapperSpec extends Specification {
 
@@ -11,22 +12,28 @@ class JpaTripMapperSpec extends Specification {
   def underTest = new JpaTripMapper()
 
   def "should map TripEntity to Trip"() {
-    def datetime = OffsetDateTime.now()
-    def price = 100
-    def destination = "CityB"
-    def departure = "CityA"
-    def id = "someId"
-    given:
-    def entity = new TripEntity(id: id, departure: departure, destination: destination, price: price, date: datetime)
-
     when:
-    def result = underTest.toTrip(entity)
+    def result = underTest.toTrip(Fixtures.TRIP_ENTITY)
 
     then:
-    result.id() == id
-    result.departure() == departure
-    result.destination() == destination
-    result.price() == price
-    result.date() == datetime
+    result.id() == Fixtures.TRIP_ID
+    result.departure() == Fixtures.DEPARTURE
+    result.destination() == Fixtures.DESTINATION
+    result.price() == Fixtures.PRICE
+    result.date() == Fixtures.DATETIME
+  }
+
+  @Unroll
+  def "should map SeatEntity with #status and #seatNumber to #expectedResult"() {
+    expect:
+    def seatEntity = new SeatEntity(id: 1L, seatNumber: seatNumber, status: status, lockExpirationTime: null)
+    def result = underTest.toSeat(seatEntity)
+    result == expectedResult
+
+    where:
+    status                                | seatNumber | expectedResult
+    SeatEntity.SeatEntityStatus.AVAILABLE | "A15"      | new Seat(seatNumber, Seat.SeatStatus.AVAILABLE)
+    SeatEntity.SeatEntityStatus.LOCKED    | "A15"      | new Seat(seatNumber, Seat.SeatStatus.RESERVED)
+    SeatEntity.SeatEntityStatus.RESERVED  | "A15"      | new Seat(seatNumber, Seat.SeatStatus.RESERVED)
   }
 }

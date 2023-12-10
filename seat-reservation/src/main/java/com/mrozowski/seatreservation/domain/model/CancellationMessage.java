@@ -19,7 +19,7 @@ public record CancellationMessage(Status status, String message) {
         referenceNr));
   }
 
-  static enum Status {
+  enum Status {
     SUCCESS,
     ERROR,
     NOT_FOUND

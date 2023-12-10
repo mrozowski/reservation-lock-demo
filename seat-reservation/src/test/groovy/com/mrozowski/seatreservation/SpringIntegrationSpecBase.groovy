@@ -35,7 +35,7 @@ class SpringIntegrationSpecBase extends Specification {
     registry.add("spring.liquibase.contexts", () -> "test")
   }
 
-  def baseUrl(){
+  def baseUrl() {
     return "${BASE_URL}:${port}"
   }
 }

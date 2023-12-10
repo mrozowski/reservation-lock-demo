@@ -5,15 +5,13 @@ import com.mrozowski.seatreservation.domain.command.FilterCriteria;
 import com.mrozowski.seatreservation.domain.command.FilterCriteria.FilterOperation;
 import com.mrozowski.seatreservation.domain.command.TripFilterCommand;
 import com.mrozowski.seatreservation.domain.model.Trip;
+import com.mrozowski.seatreservation.domain.model.TripSeatDetails;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +47,11 @@ class TripController {
 
     var command = buildFilterCommand(filters, page, size);
     return ResponseEntity.ok(reservationFacade.getTripList(command));
+  }
+
+  @GetMapping("/{tripId}/seats")
+  ResponseEntity<TripSeatDetails> getSeatList(@PathVariable("tripId") String tripId) {
+    return ResponseEntity.ok(reservationFacade.getSeatList(tripId));
   }
 
   private TripFilterCommand buildFilterCommand(List<FilterCriteria> filters, int page, int size) {

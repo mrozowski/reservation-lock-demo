@@ -3,6 +3,7 @@ package com.mrozowski.seatreservation.adapter.outgoing;
 import com.mrozowski.seatreservation.domain.command.FilterCriteria;
 import com.mrozowski.seatreservation.domain.command.TripFilterCommand;
 import com.mrozowski.seatreservation.domain.model.Trip;
+import com.mrozowski.seatreservation.domain.model.TripSeatDetails;
 import com.mrozowski.seatreservation.domain.port.TripRepository;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.Predicate;
@@ -24,6 +25,7 @@ class JpaTripRepository implements TripRepository {
 
   private static final String DATE = "date";
   private final PaginationTripRepository tripRepository;
+  private final CrudSeatRepository seatRepository;
   private final JpaTripMapper mapper;
 
   @Override
@@ -31,6 +33,12 @@ class JpaTripRepository implements TripRepository {
     var pageable = PageRequest.of(command.page(), command.pageSize(), Sort.by(DATE));
     var specification = buildSpecification(command.filters());
     return tripRepository.findAll(specification, pageable).map(mapper::toTrip);
+  }
+
+  @Override
+  public TripSeatDetails getSeatList(String tripId) {
+    var seatList = seatRepository.findAllByTripId(tripId).map(mapper::toSeat).toList();
+    return TripSeatDetails.of(tripId, seatList);
   }
 
   private Specification<TripEntity> buildSpecification(List<FilterCriteria> filters) {

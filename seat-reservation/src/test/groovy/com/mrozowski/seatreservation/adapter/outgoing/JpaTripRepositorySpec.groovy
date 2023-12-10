@@ -1,48 +1,32 @@
 package com.mrozowski.seatreservation.adapter.outgoing
 
-import com.mrozowski.seatreservation.domain.command.FilterCriteria
 import com.mrozowski.seatreservation.domain.command.TripFilterCommand
-import com.mrozowski.seatreservation.domain.model.Trip
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.time.LocalDate
-import java.time.OffsetDateTime
-
-import static com.mrozowski.seatreservation.domain.command.FilterCriteria.FilterOperation.EQUAL
+import java.util.stream.Stream
 
 class JpaTripRepositorySpec extends Specification {
   def tripRepository = Mock(PaginationTripRepository)
+  def seatRepository = Mock(CrudSeatRepository)
   def mapper = Mock(JpaTripMapper)
 
   @Subject
-  def underTest = new JpaTripRepository(tripRepository, mapper)
+  def underTest = new JpaTripRepository(tripRepository, seatRepository, mapper)
 
   def "should return a list of trips based on filter criteria"() {
     given:
-    def filters = [new FilterCriteria("departure", "CityA", EQUAL),
-                   new FilterCriteria("date", LocalDate.now(), EQUAL)]
-    def pageRequest = PageRequest.of(0, 10, Sort.by("date"))
+    def filters = [Fixtures.FILTER_DEPARTURE, Fixtures.FILTER_DATE]
     def command = TripFilterCommand.builder()
         .filters(filters)
         .page(0)
         .pageSize(10)
         .build()
 
-    def tripEntity = new TripEntity(
-        id: "1",
-        departure: "CityA",
-        destination: "CityB",
-        date: OffsetDateTime.now(),
-        price: 100
-    )
-
-    def trip = new Trip("1", "CityA", "CityB", OffsetDateTime.now(), 100)
-    tripRepository.findAll(_, _) >> new PageImpl<TripEntity>([tripEntity], PageRequest.of(0, command.pageSize()), command.pageSize())
-    mapper.toTrip(tripEntity) >> trip
+    tripRepository.findAll(_, _) >> new PageImpl<TripEntity>([Fixtures.TRIP_ENTITY], PageRequest.of(0, command.pageSize()), command.pageSize())
+    mapper.toTrip(Fixtures.TRIP_ENTITY) >> Fixtures.TRIP
 
     when:
     def result = underTest.getTripList(command)
@@ -50,8 +34,21 @@ class JpaTripRepositorySpec extends Specification {
     then:
     result.content.size() == 1
     with(result.content.first()) {
-      it.departure() == "CityA"
-      it.destination() == "CityB"
+      it.departure() == Fixtures.DEPARTURE
+      it.destination() == Fixtures.DESTINATION
     }
+  }
+
+  def "should return seat details based on tripId"() {
+    given:
+    seatRepository.findAllByTripId(Fixtures.TRIP_ID) >> Stream.of(Fixtures.SEAT_ENTITY_AVAILABLE)
+    mapper.toSeat(Fixtures.SEAT_ENTITY_AVAILABLE) >> Fixtures.SEAT_AVAILABLE
+
+    when:
+    def result = underTest.getSeatList(Fixtures.TRIP_ID)
+
+    then:
+    result.tripId() == Fixtures.TRIP_ID
+    result.seats() == [Fixtures.SEAT_AVAILABLE]
   }
 }

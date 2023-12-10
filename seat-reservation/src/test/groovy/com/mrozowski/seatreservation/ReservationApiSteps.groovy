@@ -10,10 +10,9 @@ import io.cucumber.java.en.When
 import io.cucumber.spring.CucumberContextConfiguration
 import org.apache.commons.lang3.StringUtils
 
-import static com.mrozowski.seatreservation.RestApiClient.*
-import static com.mrozowski.seatreservation.RestApiClient.RequestMethod.DELETE
-import static com.mrozowski.seatreservation.RestApiClient.RequestMethod.GET
-import static com.mrozowski.seatreservation.RestApiClient.RequestMethod.POST
+import static com.mrozowski.seatreservation.RestApiClient.HTTPHeader
+import static com.mrozowski.seatreservation.RestApiClient.RequestMethod.*
+import static com.mrozowski.seatreservation.RestApiClient.newConnection
 
 @Slf4j
 @CucumberContextConfiguration
