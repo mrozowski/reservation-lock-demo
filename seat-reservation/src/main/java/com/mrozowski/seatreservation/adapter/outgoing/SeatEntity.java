@@ -23,9 +23,19 @@ class SeatEntity {
 
   private OffsetDateTime lockExpirationTime;
 
+  private String lockSessionToken;
+
   enum SeatEntityStatus {
     AVAILABLE,
     LOCKED,
     RESERVED
+  }
+
+  boolean isNotAvailable() {
+    return status != SeatEntityStatus.AVAILABLE;
+  }
+
+  boolean isAvailable() {
+    return status == SeatEntityStatus.AVAILABLE;
   }
 }

@@ -3,16 +3,21 @@ package com.mrozowski.seatreservation.adapter.incoming;
 import com.mrozowski.seatreservation.domain.ReservationFacade;
 import com.mrozowski.seatreservation.domain.command.FilterCriteria;
 import com.mrozowski.seatreservation.domain.command.FilterCriteria.FilterOperation;
+import com.mrozowski.seatreservation.domain.command.ResourceNotFoundException;
 import com.mrozowski.seatreservation.domain.command.TripFilterCommand;
+import com.mrozowski.seatreservation.domain.exception.SeatNotAvailableException;
 import com.mrozowski.seatreservation.domain.model.Trip;
 import com.mrozowski.seatreservation.domain.model.TripSeatDetails;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +59,17 @@ class TripController {
     return ResponseEntity.ok(reservationFacade.getSeatList(tripId));
   }
 
+  @PostMapping("/{tripId}/seats/{seatNumber}/lock")
+  ResponseEntity<Void> lockSeat(@PathVariable("tripId") String tripId, @PathVariable("seatNumber") String seatNumber) {
+    log.info("Received request to lock seat {} for trip {}", seatNumber, tripId);
+    var response = reservationFacade.lockSeat(tripId, seatNumber);
+    var tokenHeader = "Basic " + response.sessionToken();
+    return ResponseEntity.ok()
+        .header("Authorization", tokenHeader)
+        .header("X-Session-Expiration", response.expirationDateTime().toString())
+        .build();
+  }
+
   private TripFilterCommand buildFilterCommand(List<FilterCriteria> filters, int page, int size) {
     return TripFilterCommand.builder()
         .page(page - 1)
@@ -75,6 +91,32 @@ class TripController {
       var parsedDate = dateParser.toLocalDate(date);
       filters.add(new FilterCriteria(paramName, parsedDate, operation));
     }
+  }
+
+  @ExceptionHandler(SeatNotAvailableException.class)
+  ResponseEntity<ApiError> handleSeatNotAvailableException(SeatNotAvailableException ex, HttpServletRequest request) {
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+        ApiError.builder()
+            .timestamp(LocalDateTime.now())
+            .error("BAD_REQUEST")
+            .message(ex.getMessage())
+            .path(request.getRequestURI())
+            .status(HttpStatus.BAD_REQUEST)
+            .build()
+    );
+  }
+
+  @ExceptionHandler(ResourceNotFoundException.class)
+  ResponseEntity<ApiError> handleNotFoundException(ResourceNotFoundException ex, HttpServletRequest request) {
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+        ApiError.builder()
+            .timestamp(LocalDateTime.now())
+            .error("NOT_FOUND")
+            .message(ex.getMessage())
+            .path(request.getRequestURI())
+            .status(HttpStatus.NOT_FOUND)
+            .build()
+    );
   }
 }
 

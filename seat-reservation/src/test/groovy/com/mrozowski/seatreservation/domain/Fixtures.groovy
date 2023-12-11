@@ -3,6 +3,9 @@ package com.mrozowski.seatreservation.domain
 import com.mrozowski.seatreservation.domain.model.CancellationMessage
 import com.mrozowski.seatreservation.domain.model.ReservationDetails
 import com.mrozowski.seatreservation.domain.model.Trip
+import com.mrozowski.seatreservation.domain.model.TripSeatDetails
+import com.mrozowski.seatreservation.domain.model.TripSeatDetails.Seat
+import com.mrozowski.seatreservation.domain.model.TripSeatDetails.Seat.SeatStatus
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.PageRequest
@@ -50,4 +53,7 @@ class Fixtures {
       .build()
 
   static CancellationMessage CANCELLATION_MESSAGE = CancellationMessage.successful(Fixtures.REFERENCE_NUMBER)
+  static SeatStatus SEAT_STATUS_AVAILABLE = SeatStatus.AVAILABLE
+  static Seat SEAT_AVAILABLE = new Seat(SEAT_NUMBER, SEAT_STATUS_AVAILABLE)
+  static TripSeatDetails TRIP_SEAT_DETAILS = TripSeatDetails.of(TRIP_ID, [SEAT_AVAILABLE])
 }

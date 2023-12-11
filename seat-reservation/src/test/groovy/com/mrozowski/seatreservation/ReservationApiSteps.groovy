@@ -22,6 +22,7 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
   private static final String CANCEL_RESERVATION_RESPONSE_KEY = "cancellationResponse"
   private static final String REFERENCE_NUMBER_KEY = "referenceNumber"
   private static final String SESSION_TOKEN = "sessionToken"
+  private static final String SESSION_TOKEN_EXPIRE = "sessionTokenExpirationDate"
   private static final String TRIP_ID_KEY = "tripId"
   private static final String SEAT_NUMBER_KEY = "seatNumber"
   private static final String RESERVATION_ID = "reservationId"
@@ -118,11 +119,14 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
     def tripId = scenarioContext.get(TRIP_ID_KEY) as String
     try (var restApiClient = newConnection()
         .url("${baseUrl()}/v1/trips/${tripId}/seats/${seatNumber}/lock")
-        .requestMethod(GET)
+        .requestMethod(POST)
         .connect()) {
 
+      def token = restApiClient.getResponseHeader("Authorization")
+      def expirationTime = restApiClient.getResponseHeader("X-Session-Expiration")
       restApiClient.assertStatusCode(200)
-      scenarioContext.put(SESSION_TOKEN, restApiClient.responseAsText) // TODO: retrieve token from json
+      scenarioContext.put(SESSION_TOKEN, token)
+      scenarioContext.put(SESSION_TOKEN_EXPIRE, expirationTime)
       scenarioContext.put(SEAT_NUMBER_KEY, seatNumber)
     } catch (Exception e) {
       print "There was an error during REST call: ${e.message}"
@@ -140,8 +144,11 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
         .connect()) {
 
       restApiClient.assertStatusCode(200)
-      def jsonResponse = restApiClient.responseAsText
-      // TODO: check if $seatNumber is unavailable
+      def response = new JsonSlurper().parseText(restApiClient.responseAsText)
+      def seats = response.seats as ArrayList
+      assert seats.stream()
+          .filter(seat -> seat.seatNumber == seatNumber)
+          .allMatch(seat -> seat.status == "RESERVED")
     } catch (Exception e) {
       print "There was an error during REST call: ${e.message}"
     }

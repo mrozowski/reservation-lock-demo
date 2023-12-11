@@ -73,6 +73,10 @@ class RestApiClient implements AutoCloseable {
     return connection.inputStream.text
   }
 
+  String getResponseHeader(String name){
+    return connection.getHeaderField(name)
+  }
+
   @Override
   void close() throws Exception {
     headers.clear()

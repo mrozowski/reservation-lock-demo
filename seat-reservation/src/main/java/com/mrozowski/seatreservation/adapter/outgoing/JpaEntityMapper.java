@@ -6,8 +6,7 @@ import com.mrozowski.seatreservation.domain.model.TripSeatDetails.Seat;
 import org.springframework.stereotype.Component;
 
 @Component
-class JpaTripMapper {
-
+class JpaEntityMapper {
 
   Seat toSeat(SeatEntity entity) {
     var status = entity.getStatus() == SeatEntityStatus.AVAILABLE ? Seat.SeatStatus.AVAILABLE :

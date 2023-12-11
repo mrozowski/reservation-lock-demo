@@ -9,7 +9,7 @@ import static com.mrozowski.seatreservation.domain.model.TripSeatDetails.Seat
 class JpaTripMapperSpec extends Specification {
 
   @Subject
-  def underTest = new JpaTripMapper()
+  def underTest = new JpaEntityMapper()
 
   def "should map TripEntity to Trip"() {
     when:

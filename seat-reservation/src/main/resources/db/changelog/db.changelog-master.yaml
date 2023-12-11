@@ -51,6 +51,9 @@ databaseChangeLog:
                   name: status
                   type: varchar(50)
               - column:
+                  name: lock_session_token
+                  type: varchar(36)
+              - column:
                   name: lock_expiration_time
                   type: timestamp
 

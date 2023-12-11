@@ -12,7 +12,7 @@ VALUES ('WL120323A', 'Warsaw', 'London', '2024-03-12 10:00', 115),
        ('NYA010423J', 'New York', 'Athens', '2024-04-01 20:25', 340);
 
 -- Insert test data to seat table. Each trip has 66 available seats from 10A till 20F
-INSERT INTO seat (trip_id, seat_number, status, lock_expiration_time)
+INSERT INTO seat (trip_id, seat_number, status, lock_expiration_time, lock_session_token)
 SELECT trip.id         AS trip_id,
        CONCAT(10 + (seq - 1) % 11,
               CASE
@@ -24,9 +24,9 @@ SELECT trip.id         AS trip_id,
                   ELSE 'F'
                   END) AS seat_number,
        'AVAILABLE'     AS status,
-       NULL            AS lock_expiration_time
-FROM trip,
-     generate_series(1, 66) seq;
+       NULL            AS lock_expiration_time,
+       NULL            AS lock_session_token
+FROM trip, generate_series(1, 66) seq;
 
 
 -- Insert test data to reservation table.

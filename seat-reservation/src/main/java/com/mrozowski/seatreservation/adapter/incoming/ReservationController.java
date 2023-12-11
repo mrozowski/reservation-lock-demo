@@ -1,6 +1,7 @@
 package com.mrozowski.seatreservation.adapter.incoming;
 
 import com.mrozowski.seatreservation.domain.ReservationFacade;
+import com.mrozowski.seatreservation.domain.command.ResourceNotFoundException;
 import com.mrozowski.seatreservation.domain.model.CancellationMessage;
 import com.mrozowski.seatreservation.domain.model.ReservationDetails;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,7 +37,7 @@ class ReservationController {
   }
 
   @ExceptionHandler(ResourceNotFoundException.class)
-  ResponseEntity<ApiError> handleIDateTimeParseException(ResourceNotFoundException ex, HttpServletRequest request) {
+  ResponseEntity<ApiError> handleNotFoundException(ResourceNotFoundException ex, HttpServletRequest request) {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
         ApiError.builder()
             .timestamp(LocalDateTime.now())

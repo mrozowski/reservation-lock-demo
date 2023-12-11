@@ -22,11 +22,13 @@ class Fixtures {
   static final String SEAT_ENTITY_STATUS_AVAILABLE = SeatEntity.SeatEntityStatus.AVAILABLE
   static final String SEAT_ENTITY_STATUS_LOCKED = SeatEntity.SeatEntityStatus.LOCKED
   static final String SEAT_ENTITY_STATUS_RESERVED = SeatEntity.SeatEntityStatus.RESERVED
+  static final String SESSION_TOKEN = "63fc4f00-2538-42b7-b4eb-e61c9acc751f"
 
   static final TripEntity TRIP_ENTITY = new TripEntity(id: TRIP_ID, departure: DEPARTURE, destination: DESTINATION, price: PRICE, date: DATETIME)
   static final Trip TRIP = new Trip(TRIP_ID, DEPARTURE, DESTINATION, DATETIME, PRICE)
 
   static final SeatEntity SEAT_ENTITY_AVAILABLE = new SeatEntity(id: SEAT_ID, seatNumber: SEAT_NUMBER, status: SEAT_ENTITY_STATUS_AVAILABLE, lockExpirationTime: null)
+  static final SeatEntity SEAT_ENTITY_RESERVED = new SeatEntity(id: SEAT_ID, seatNumber: SEAT_NUMBER, status: SEAT_ENTITY_STATUS_RESERVED, lockExpirationTime: null)
   static final TripSeatDetails.Seat SEAT_AVAILABLE = new TripSeatDetails.Seat(SEAT_NUMBER, TripSeatDetails.Seat.SeatStatus.AVAILABLE)
 
   static final FilterCriteria FILTER_DEPARTURE = new FilterCriteria("departure", "CityA", FilterCriteria.FilterOperation.EQUAL)

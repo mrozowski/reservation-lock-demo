@@ -6,15 +6,12 @@ import org.springframework.data.domain.PageRequest
 import spock.lang.Specification
 import spock.lang.Subject
 
-import java.util.stream.Stream
-
 class JpaTripRepositorySpec extends Specification {
   def tripRepository = Mock(PaginationTripRepository)
-  def seatRepository = Mock(CrudSeatRepository)
-  def mapper = Mock(JpaTripMapper)
+  def mapper = Mock(JpaEntityMapper)
 
   @Subject
-  def underTest = new JpaTripRepository(tripRepository, seatRepository, mapper)
+  def underTest = new JpaTripRepository(tripRepository, mapper)
 
   def "should return a list of trips based on filter criteria"() {
     given:
@@ -37,18 +34,5 @@ class JpaTripRepositorySpec extends Specification {
       it.departure() == Fixtures.DEPARTURE
       it.destination() == Fixtures.DESTINATION
     }
-  }
-
-  def "should return seat details based on tripId"() {
-    given:
-    seatRepository.findAllByTripId(Fixtures.TRIP_ID) >> Stream.of(Fixtures.SEAT_ENTITY_AVAILABLE)
-    mapper.toSeat(Fixtures.SEAT_ENTITY_AVAILABLE) >> Fixtures.SEAT_AVAILABLE
-
-    when:
-    def result = underTest.getSeatList(Fixtures.TRIP_ID)
-
-    then:
-    result.tripId() == Fixtures.TRIP_ID
-    result.seats() == [Fixtures.SEAT_AVAILABLE]
   }
 }

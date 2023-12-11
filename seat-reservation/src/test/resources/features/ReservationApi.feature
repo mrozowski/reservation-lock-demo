@@ -31,7 +31,7 @@ Feature: Reservation API Scenarios
   Scenario: User makes a reservation for a trip
     Given the user has chosen a trip
     When the user searches for available seats
-    Then the user chooses an available seat with number "G15"
+    Then the user chooses an available seat with number "15A"
     And the chosen seat is locked
     Then the user confirms reservation
     And the user makes payment

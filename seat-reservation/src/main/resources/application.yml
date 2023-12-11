@@ -17,3 +17,5 @@ spring:
 reservation:
   date:
     date-format: 'dd-MM-yyyy'
+  seat-lock:
+    expiration-time: 20m
