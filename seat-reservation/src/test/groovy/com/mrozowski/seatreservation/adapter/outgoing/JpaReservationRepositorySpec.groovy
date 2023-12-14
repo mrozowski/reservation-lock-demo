@@ -1,6 +1,7 @@
 package com.mrozowski.seatreservation.adapter.outgoing
 
 import com.mrozowski.seatreservation.domain.model.ReservationDetails
+import jakarta.persistence.EntityManager
 import org.hibernate.HibernateException
 import spock.lang.Specification
 import spock.lang.Subject
@@ -10,8 +11,10 @@ import java.time.OffsetDateTime
 class JpaReservationRepositorySpec extends Specification {
 
   def repository = Mock(CrudReservationRepository)
+  def entityManager = Mock(EntityManager)
+
   @Subject
-  def underTest = new JpaReservationRepository(repository)
+  def underTest = new JpaReservationRepository(repository, entityManager)
 
   def "should call crud repository and return reservation details"() {
     given:

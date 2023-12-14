@@ -67,4 +67,16 @@ class JpaSeatRepositorySpec extends Specification {
     then:
     thrown ResourceNotFoundException
   }
+
+  def "should confirm seat is Locked by valid SessionToken" (){
+    given:
+    1 * seatRepository.findFirstByTripIdAndSeatNumber(Fixtures.TRIP_ID, Fixtures.SEAT_NUMBER) >> Optional.of(Fixtures.SEAT_ENTITY_LOCKED)
+
+    when:
+    def result = underTest.confirmUserLockSeatSessionToken(Fixtures.TRIP_ID, Fixtures.SEAT_NUMBER, Fixtures.SESSION_TOKEN)
+
+    then:
+    noExceptionThrown()
+    result == Fixtures.USER_SESSION_TOKEN_CONFIRMATION
+  }
 }

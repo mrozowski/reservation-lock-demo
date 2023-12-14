@@ -21,12 +21,11 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
   private static final String RESERVATION_DETAILS_RESPONSE_KEY = "reservationDetails"
   private static final String CANCEL_RESERVATION_RESPONSE_KEY = "cancellationResponse"
   private static final String REFERENCE_NUMBER_KEY = "referenceNumber"
-  private static final String SESSION_TOKEN = "sessionToken"
-  private static final String SESSION_TOKEN_EXPIRE = "sessionTokenExpirationDate"
+  private static final String SESSION_TOKEN_KEY = "sessionToken"
+  private static final String SESSION_TOKEN_EXPIRE_KEY = "sessionTokenExpirationDate"
   private static final String TRIP_ID_KEY = "tripId"
   private static final String SEAT_NUMBER_KEY = "seatNumber"
-  private static final String RESERVATION_ID = "reservationId"
-  public static final String PRICE = "price"
+  public static final String PRICE_KEY = "price"
   private ScenarioContext scenarioContext = new ScenarioContext()
 
   @Before
@@ -125,8 +124,8 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
       def token = restApiClient.getResponseHeader("Authorization")
       def expirationTime = restApiClient.getResponseHeader("X-Session-Expiration")
       restApiClient.assertStatusCode(200)
-      scenarioContext.put(SESSION_TOKEN, token)
-      scenarioContext.put(SESSION_TOKEN_EXPIRE, expirationTime)
+      scenarioContext.put(SESSION_TOKEN_KEY, token)
+      scenarioContext.put(SESSION_TOKEN_EXPIRE_KEY, expirationTime)
       scenarioContext.put(SEAT_NUMBER_KEY, seatNumber)
     } catch (Exception e) {
       print "There was an error during REST call: ${e.message}"
@@ -151,15 +150,16 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
           .allMatch(seat -> seat.status == "RESERVED")
     } catch (Exception e) {
       print "There was an error during REST call: ${e.message}"
+      throw e
     }
   }
 
   @Then("the user confirms reservation")
   def theUserConfirmsReservationAndMakesPayment() {
-    def sessionToken = scenarioContext.get(SESSION_TOKEN) as String
-    def reservationJsonBodyTest = getClass().getResourceAsStream("json/reservation.json").text
+    def sessionToken = scenarioContext.get(SESSION_TOKEN_KEY) as String
+    def reservationJsonBodyTest = getClass().getResourceAsStream("/json/reservation.json").text
     try (var restApiClient = newConnection()
-        .url("${baseUrl()}/v1/reservation/process")
+        .url("${baseUrl()}/v1/reservations/process")
         .addJsonBody(reservationJsonBodyTest)
         .addHeader(HTTPHeader.sessionToken(sessionToken))
         .requestMethod(POST)
@@ -167,29 +167,33 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
 
       restApiClient.assertStatusCode(200)
       def reservationRespond = new JsonSlurper().parseText(restApiClient.responseAsText)
-      scenarioContext.put(RESERVATION_ID, reservationRespond.reservationId)
-      scenarioContext.put(PRICE, reservationRespond.price)
-      scenarioContext.put(REFERENCE_NUMBER_KEY, reservationRespond.bookingReference)
+
+      assert reservationRespond.price == 25000
+      assert StringUtils.isNotBlank(reservationRespond.reference)
+
+      scenarioContext.put(PRICE_KEY, reservationRespond.price)
+      scenarioContext.put(REFERENCE_NUMBER_KEY, reservationRespond.reference)
 
     } catch (Exception e) {
       print "There was an error during REST call: ${e.message}"
+      throw e
     }
   }
 
   @And("the user makes payment")
   def theUserMakesPayment() {
     def clientSecret
-    def price = scenarioContext.get(PRICE) as String
-    def sessionToken = scenarioContext.get(SESSION_TOKEN) as String
-    def reservationId = scenarioContext.get(RESERVATION_ID) as String
+    def price = scenarioContext.get(PRICE_KEY) as String
+    def sessionToken = scenarioContext.get(SESSION_TOKEN_KEY) as String
+    def bookingReference = scenarioContext.get(REFERENCE_NUMBER_KEY) as String
 
-    def intentRequestTemplate = getClass().getResourceAsStream("json/stripIntentTemplate.json").text
+    def intentRequestTemplate = getClass().getResourceAsStream("/json/stripIntentTemplate.json").text
     def intentRequest = JsonTemplate.newTemplate(intentRequestTemplate)
-        .binding(["reservation": reservationId, "price": price])
+        .binding(["reference": bookingReference, "price": price])
         .generate()
 
     try (var restApiClient = newConnection()
-        .url("${baseUrl()}/v1/payment/create-intent")
+        .url("${baseUrl()}/v1/reservation/payment/create-intent")
         .addJsonBody(intentRequest)
         .addHeader(HTTPHeader.sessionToken(sessionToken))
         .requestMethod(POST)
@@ -201,7 +205,7 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
 
     } catch (Exception e) {
       print "There was an error during REST call: ${e.message}"
-      return
+      throw e
     }
 
     def paymentConfirmationTemplate = getClass().getResourceAsStream("json/stripeConfirmationTemplate.json").text

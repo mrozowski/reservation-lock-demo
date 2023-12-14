@@ -4,10 +4,13 @@ import com.mrozowski.seatreservation.domain.command.ResourceNotFoundException;
 import com.mrozowski.seatreservation.domain.exception.SeatNotAvailableException;
 import com.mrozowski.seatreservation.domain.model.TemporarySessionToken;
 import com.mrozowski.seatreservation.domain.model.TripSeatDetails;
+import com.mrozowski.seatreservation.domain.model.UserSeatSessionTokenConfirmation;
 import com.mrozowski.seatreservation.domain.port.SeatRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+
+import java.time.OffsetDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +32,29 @@ class JpaSeatRepository implements SeatRepository {
       throw new SeatNotAvailableException(tripId, seatNumber);
     }
     updateAvailableSeatWithLock(tripId, seatNumber, sessionToken);
+  }
+
+  @Override
+  public UserSeatSessionTokenConfirmation confirmUserLockSeatSessionToken(String tripId, String seatNumber,
+                                                                          String sessionToken) {
+    var seatEntity = getSeatEntity(tripId, seatNumber);
+    if (isSessionTokenValid(sessionToken, seatEntity)) {
+      if (isSessionExpired(seatEntity)) {
+        return UserSeatSessionTokenConfirmation.valid(seatEntity.getId());
+      } else {
+        return UserSeatSessionTokenConfirmation.expired(seatEntity.getId());
+      }
+    } else {
+      return UserSeatSessionTokenConfirmation.invalid(seatEntity.getId());
+    }
+  }
+
+  private static boolean isSessionExpired(SeatEntity seatEntity) {
+    return OffsetDateTime.now().isBefore(seatEntity.getLockExpirationTime());
+  }
+
+  private static boolean isSessionTokenValid(String sessionToken, SeatEntity seatEntity) {
+    return seatEntity.getLockSessionToken().equals(sessionToken);
   }
 
   private void updateAvailableSeatWithLock(String tripId, String seatNumber, TemporarySessionToken sessionToken) {

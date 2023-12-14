@@ -10,12 +10,13 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
-class TokenGenerator {
+class BasicTokenGenerator {
 
+  private static final String PREFIX = "Basic";
   private final ReservationSeatLockProperties lockProperties;
 
   TemporarySessionToken generate() {
-    var sessionToken = generateToken();
+    var sessionToken = PREFIX + " " + generateToken();
     var expirationDate = generateExpirationDate();
     return new TemporarySessionToken(sessionToken, expirationDate);
   }

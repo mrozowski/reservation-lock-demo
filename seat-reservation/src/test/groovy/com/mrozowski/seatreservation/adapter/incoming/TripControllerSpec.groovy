@@ -61,7 +61,7 @@ class TripControllerSpec extends Specification {
     expect:
     mockMvc.perform(post("/v1/trips/${Fixtures.TRIP_ID}/seats/${Fixtures.SEAT_NUMBER}/lock"))
         .andExpect(status().isOk())
-        .andExpect(header().string("Authorization", "Basic ${Fixtures.STRING_TOKEN}"))
+        .andExpect(header().string("Authorization", "${Fixtures.SESSION_TOKEN}"))
         .andExpect(header().string("X-Session-Expiration", Fixtures.OFFSET_DATE_TIME.toString()))
   }
 

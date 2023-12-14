@@ -35,4 +35,17 @@ class JpaTripRepositorySpec extends Specification {
       it.destination() == Fixtures.DESTINATION
     }
   }
+
+  def "should get trip by id"(){
+    given:
+    1 * tripRepository.findFirstById(Fixtures.TRIP_ID) >> Optional.of(Fixtures.TRIP_ENTITY)
+    1 * mapper.toTrip(Fixtures.TRIP_ENTITY) >> Fixtures.TRIP
+
+    when:
+    def result = underTest.getTripById(Fixtures.TRIP_ID)
+
+    then:
+    noExceptionThrown()
+    result == Fixtures.TRIP
+  }
 }

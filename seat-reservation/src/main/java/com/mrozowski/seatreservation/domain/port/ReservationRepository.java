@@ -2,6 +2,7 @@ package com.mrozowski.seatreservation.domain.port;
 
 import com.mrozowski.seatreservation.domain.model.CancellationMessage;
 import com.mrozowski.seatreservation.domain.model.ReservationDetails;
+import com.mrozowski.seatreservation.domain.model.ReservationRequestCommand;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
@@ -12,4 +13,6 @@ public interface ReservationRepository {
 
   @Transactional
   CancellationMessage cancelReservation(String reference, String name);
+
+  void save(ReservationRequestCommand reservationRequestCommand, String reference, long seatId, int price);
 }

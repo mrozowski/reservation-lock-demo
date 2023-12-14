@@ -25,6 +25,10 @@ class SeatEntity {
 
   private String lockSessionToken;
 
+  public boolean isLocked() {
+    return status == SeatEntityStatus.LOCKED;
+  }
+
   enum SeatEntityStatus {
     AVAILABLE,
     LOCKED,

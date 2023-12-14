@@ -24,6 +24,15 @@ class ReservationEntity {
 
   private String reference;
   private String customerName;
+  private int price;
   private OffsetDateTime createdAt;
-  private String paymentStatus;
+
+  @Enumerated(EnumType.STRING)
+  private PaymentStatus paymentStatus;
+
+  enum PaymentStatus {
+    PENDING,
+    CANCELED,
+    CONFIRMED
+  }
 }

@@ -52,7 +52,7 @@ databaseChangeLog:
                   type: varchar(50)
               - column:
                   name: lock_session_token
-                  type: varchar(36)
+                  type: varchar(50)
               - column:
                   name: lock_expiration_time
                   type: timestamp
@@ -92,6 +92,9 @@ databaseChangeLog:
               - column:
                   name: customer_name
                   type: varchar(200)
+              - column:
+                  name: price
+                  type: integer
               - column:
                   name: created_at
                   type: timestamp

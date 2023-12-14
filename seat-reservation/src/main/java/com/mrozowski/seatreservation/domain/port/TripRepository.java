@@ -7,4 +7,6 @@ import org.springframework.data.domain.Page;
 public interface TripRepository {
 
   Page<Trip> getTripList(TripFilterCommand command);
+
+  Trip getTripById(String tripId);
 }

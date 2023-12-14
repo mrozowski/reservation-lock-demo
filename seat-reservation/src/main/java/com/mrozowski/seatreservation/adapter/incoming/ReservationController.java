@@ -3,7 +3,9 @@ package com.mrozowski.seatreservation.adapter.incoming;
 import com.mrozowski.seatreservation.domain.ReservationFacade;
 import com.mrozowski.seatreservation.domain.command.ResourceNotFoundException;
 import com.mrozowski.seatreservation.domain.model.CancellationMessage;
+import com.mrozowski.seatreservation.domain.model.ReservationConfirmation;
 import com.mrozowski.seatreservation.domain.model.ReservationDetails;
+import com.mrozowski.seatreservation.domain.model.ReservationRequestCommand;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +25,7 @@ class ReservationController {
 
   @GetMapping("/details")
   ResponseEntity<ReservationDetails> getDetails(@RequestParam String reference, @RequestParam String name) {
-    log.debug("Received request reservation details with reference={}", reference);
+    log.info("Received request reservation details with reference={}", reference);
     return reservationFacade
         .getReservationDetails(reference, name)
         .map(ResponseEntity::ok)
@@ -34,6 +36,25 @@ class ReservationController {
   ResponseEntity<CancellationMessage> cancelReservation(@RequestParam String reference, @RequestParam String name) {
     log.debug("Received request to cancel reservation with reference={}", reference);
     return ResponseEntity.ok(reservationFacade.cancelReservation(reference, name));
+  }
+
+  @PostMapping(value = "/process")
+  ResponseEntity<ReservationConfirmation> processReservation(
+      @RequestBody ReservationRequest request,
+      @RequestHeader("Authorization") String sessionToken) {
+    log.info("Received request to process reservation={}", request);
+
+    var command = ReservationRequestCommand.builder()
+        .name(request.getName())
+        .surname(request.getSurname())
+        .phone(request.getPhone())
+        .email(request.getEmail())
+        .tripId(request.getTripId())
+        .seatNumber(request.getSeatNumber())
+        .price(request.getPrice())
+        .token(sessionToken)
+        .build();
+    return ResponseEntity.ok(reservationFacade.process(command));
   }
 
   @ExceptionHandler(ResourceNotFoundException.class)

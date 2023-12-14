@@ -24,7 +24,7 @@ class Fixtures {
   static final String DESTINATION = "CityB"
   static final String PAGE_NUMBER = "1"
   static final String SIZE = "30"
-  static final String TRIP_ID = "AB123T"
+  static final String TRIP_ID = "WJ311823F"
 
   static final String NOT_FOUND_ERROR = "NOT_FOUND"
   static final String SUCCESS = "SUCCESS"
@@ -32,15 +32,16 @@ class Fixtures {
   static final String REFERENCE_KEY = "reference"
   static final String CUSTOMER_NAME_KEY = "name"
   static final String REFERENCE_NUMBER = "WLCS24"
-  static final String CUSTOMER_NAME = "John Doe"
-  static final String SEAT_NUMBER = "C15"
+  static final String CUSTOMER_FULL_NAME = "John Doe"
+  static final String SESSION_TOKEN = "Basic session-token-0"
+  static final String SEAT_NUMBER = "15A"
   static final String SEAT_STATUS_AVAILABLE = "AVAILABLE"
   static final String RESERVATION_STATUS = CONFIRMED.toString()
   static final OffsetDateTime OFFSET_DATE_TIME = OffsetDateTime.of(2024, 5, 7, 10, 00, 00, 0, ZoneOffset.UTC)
 
-  static final int PRICE = 100
+  static final int PRICE = 25000
+  static final long RESERVATION_ID = 1L
   static final LocalDate LOCAL_DATE_VALUE = LocalDate.of(2023, 1, 1)
-  static final String STRING_TOKEN = "someSessionToken123"
 
   static List<Trip> TRIPS =
       [Trip.builder()
@@ -60,7 +61,7 @@ class Fixtures {
       .departure(DEPARTURE)
       .destination(DESTINATION)
       .seatNumber(SEAT_NUMBER)
-      .customerName(CUSTOMER_NAME)
+      .customerName(CUSTOMER_FULL_NAME)
       .offsetDateTime(OFFSET_DATE_TIME)
       .status(CONFIRMED)
       .build()
@@ -69,5 +70,23 @@ class Fixtures {
 
   static TripSeatDetails.Seat SEAT = new TripSeatDetails.Seat(SEAT_NUMBER, TripSeatDetails.Seat.SeatStatus.AVAILABLE)
   static TripSeatDetails TRIP_SEAT_DETAILS = TripSeatDetails.of(TRIP_ID, [SEAT])
-  static TemporarySessionToken TOKEN_OBJECT = new TemporarySessionToken(STRING_TOKEN, OFFSET_DATE_TIME)
+  static TemporarySessionToken TOKEN_OBJECT = new TemporarySessionToken(SESSION_TOKEN, OFFSET_DATE_TIME)
+
+
+  static final String CUSTOMER_NAME = "John"
+  static final String CUSTOMER_SURNAME = "Doe"
+  static final String CUSTOMER_PHONE = "500123456"
+  static final String CUSTOMER_EMAIL = "john.doe@example.com"
+  static final ReservationRequestCommand RESERVATION_REQUEST_COMMAND = ReservationRequestCommand.builder()
+      .name(CUSTOMER_NAME)
+      .surname(CUSTOMER_SURNAME)
+      .phone(CUSTOMER_PHONE)
+      .email(CUSTOMER_EMAIL)
+      .tripId(TRIP_ID)
+      .seatNumber(SEAT_NUMBER)
+      .price(PRICE)
+      .token(SESSION_TOKEN)
+      .build()
+
+  static final ReservationConfirmation RESERVATION_CONFIRMATION = ReservationConfirmation.of(REFERENCE_NUMBER, PRICE)
 }

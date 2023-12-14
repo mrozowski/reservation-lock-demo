@@ -4,7 +4,7 @@ import org.apache.commons.lang3.StringUtils
 
 class RestApiClient implements AutoCloseable {
 
-  private static final String COOKIE_KEY = "Cookie"
+  private static final String AUTHORIZATION = "Authorization"
   private static final String HTTP_ONLY_FLAG = "HttpOnly"
   private int timeoutMs = 5000
   private String jsonBody
@@ -46,6 +46,8 @@ class RestApiClient implements AutoCloseable {
   RestApiClient connect() {
     def url = new URL(endpoint)
     connection = url.openConnection() as HttpURLConnection
+    connection.setRequestMethod(method.name())
+    connection.setConnectTimeout(timeoutMs)
 
     if (!headers.isEmpty()) {
       processHeaders()
@@ -58,8 +60,6 @@ class RestApiClient implements AutoCloseable {
       }
     }
 
-    connection.setRequestMethod(method.name())
-    connection.setConnectTimeout(timeoutMs)
     connection.connect()
     return this
   }
@@ -110,16 +110,16 @@ class RestApiClient implements AutoCloseable {
       return new HTTPHeader(name, value)
     }
 
-    static HTTPHeader withFlag(String name, String value, String flag) {
+    static HTTPHeader setCookieWithFlag(String name, String value, String flag) {
       return new HTTPHeader(name, value, flag)
     }
 
     static HTTPHeader sessionToken(String sessionToken) {
-      return new HTTPHeader(COOKIE_KEY, "session_token=$sessionToken", HTTP_ONLY_FLAG)
+      return new HTTPHeader(AUTHORIZATION, "$sessionToken")
     }
 
     boolean hasFlag() {
-      return !flag.isBlank()
+      return !Objects.isNull(flag)
     }
   }
 

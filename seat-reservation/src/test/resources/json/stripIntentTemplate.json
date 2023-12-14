@@ -2,7 +2,7 @@
   "amount": $price,
   "currency": "usd",
   "description": "Reservation Payment",
-  "reservationId": "$reservation",
+  "reference_number": "$reference",
   "metadata": {
     "customerName": "John Doe",
     "email": "john.doe@example.com"

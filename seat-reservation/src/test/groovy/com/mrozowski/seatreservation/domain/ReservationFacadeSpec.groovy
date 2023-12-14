@@ -29,10 +29,10 @@ class ReservationFacadeSpec extends Specification {
 
   def "should return reservation details"() {
     given:
-    reservationService.getReservationDetails(Fixtures.REFERENCE_NUMBER, Fixtures.CUSTOMER_NAME) >> Optional.of(Fixtures.RESERVATION_DETAILS)
+    reservationService.getReservationDetails(Fixtures.REFERENCE_NUMBER, Fixtures.CUSTOMER_FULL_NAME) >> Optional.of(Fixtures.RESERVATION_DETAILS)
 
     when:
-    def result = underTest.getReservationDetails(Fixtures.REFERENCE_NUMBER, Fixtures.CUSTOMER_NAME)
+    def result = underTest.getReservationDetails(Fixtures.REFERENCE_NUMBER, Fixtures.CUSTOMER_FULL_NAME)
 
     then:
     result.isPresent()
@@ -41,12 +41,45 @@ class ReservationFacadeSpec extends Specification {
 
   def "should cancel reservation"() {
     given:
-    reservationService.cancelReservation(Fixtures.REFERENCE_NUMBER, Fixtures.CUSTOMER_NAME) >> Fixtures.CANCELLATION_MESSAGE
+    reservationService.cancelReservation(Fixtures.REFERENCE_NUMBER, Fixtures.CUSTOMER_FULL_NAME) >> Fixtures.CANCELLATION_MESSAGE
 
     when:
-    def result = underTest.cancelReservation(Fixtures.REFERENCE_NUMBER, Fixtures.CUSTOMER_NAME)
+    def result = underTest.cancelReservation(Fixtures.REFERENCE_NUMBER, Fixtures.CUSTOMER_FULL_NAME)
 
     then:
     result == Fixtures.CANCELLATION_MESSAGE
+  }
+
+  def "should get seat list"() {
+    given:
+    tripService.getSeatList(Fixtures.TRIP_ID) >> Fixtures.TRIP_SEAT_DETAILS
+
+    when:
+    def result = underTest.getSeatList(Fixtures.TRIP_ID)
+
+    then:
+    result == Fixtures.TRIP_SEAT_DETAILS
+  }
+
+  def "should lock Seat"() {
+    given:
+    tripService.lockSeat(Fixtures.TRIP_ID, Fixtures.SEAT_NUMBER) >> Fixtures.TEMPORARY_SESSION_TOKEN
+
+    when:
+    def result = underTest.lockSeat(Fixtures.TRIP_ID, Fixtures.SEAT_NUMBER)
+
+    then:
+    result == Fixtures.TEMPORARY_SESSION_TOKEN
+  }
+
+  def "should process reservation"() {
+    given:
+    reservationService.process(Fixtures.RESERVATION_REQUEST_COMMAND) >> Fixtures.RESERVATION_CONFIRMATION
+
+    when:
+    def result = underTest.process(Fixtures.RESERVATION_REQUEST_COMMAND)
+
+    then:
+    result == Fixtures.RESERVATION_CONFIRMATION
   }
 }

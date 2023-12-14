@@ -1,6 +1,7 @@
 package com.mrozowski.seatreservation.adapter.outgoing;
 
 import com.mrozowski.seatreservation.domain.command.FilterCriteria;
+import com.mrozowski.seatreservation.domain.command.ResourceNotFoundException;
 import com.mrozowski.seatreservation.domain.command.TripFilterCommand;
 import com.mrozowski.seatreservation.domain.model.Trip;
 import com.mrozowski.seatreservation.domain.port.TripRepository;
@@ -31,6 +32,13 @@ class JpaTripRepository implements TripRepository {
     var pageable = PageRequest.of(command.page(), command.pageSize(), Sort.by(DATE));
     var specification = buildSpecification(command.filters());
     return tripRepository.findAll(specification, pageable).map(mapper::toTrip);
+  }
+
+  @Override
+  public Trip getTripById(String tripId) {
+    return tripRepository.findFirstById(tripId)
+        .map(mapper::toTrip)
+        .orElseThrow(() -> new ResourceNotFoundException("Trip " + tripId + " not found"));
   }
 
   private Specification<TripEntity> buildSpecification(List<FilterCriteria> filters) {

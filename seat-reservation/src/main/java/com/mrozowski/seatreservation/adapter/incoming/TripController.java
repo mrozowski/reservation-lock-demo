@@ -63,9 +63,8 @@ class TripController {
   ResponseEntity<Void> lockSeat(@PathVariable("tripId") String tripId, @PathVariable("seatNumber") String seatNumber) {
     log.info("Received request to lock seat {} for trip {}", seatNumber, tripId);
     var response = reservationFacade.lockSeat(tripId, seatNumber);
-    var tokenHeader = "Basic " + response.sessionToken();
     return ResponseEntity.ok()
-        .header("Authorization", tokenHeader)
+        .header("Authorization", response.sessionToken())
         .header("X-Session-Expiration", response.expirationDateTime().toString())
         .build();
   }

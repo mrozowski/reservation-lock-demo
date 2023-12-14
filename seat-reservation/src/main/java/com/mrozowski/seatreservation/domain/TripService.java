@@ -16,7 +16,7 @@ class TripService {
 
   private final TripRepository tripRepository;
   private final SeatRepository seatRepository;
-  private final TokenGenerator tokenGenerator;
+  private final BasicTokenGenerator tokenGenerator;
 
   Page<Trip> getTripList(TripFilterCommand command) {
     return tripRepository.getTripList(command);

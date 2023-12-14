@@ -34,4 +34,8 @@ public class ReservationFacade {
   public TemporarySessionToken lockSeat(String tripId, String seatNumber) {
     return tripService.lockSeat(tripId, seatNumber);
   }
+
+  public ReservationConfirmation process(ReservationRequestCommand reservationRequestCommand) {
+    return reservationService.process(reservationRequestCommand);
+  }
 }

@@ -11,7 +11,7 @@ class TripServiceSpec extends Specification {
 
   def tripRepository = Mock(TripRepository)
   def seatRepository = Mock(SeatRepository)
-  def tokenGenerator = Mock(TokenGenerator)
+  def tokenGenerator = Mock(BasicTokenGenerator)
 
   @Subject
   def underTest = new TripService(tripRepository, seatRepository, tokenGenerator)
@@ -45,7 +45,7 @@ class TripServiceSpec extends Specification {
 
   def "should lock seat and return new session token"() {
     given:
-    def sessionToken = "some-session-token-0"
+    def sessionToken = "Basic some-session-token-0"
     def token = new TemporarySessionToken(sessionToken, Fixtures.OFFSET_DATE_TIME)
     1 * tokenGenerator.generate() >> token
     1 * seatRepository.lockSeat(Fixtures.TRIP_ID, Fixtures.SEAT_NUMBER, token)
