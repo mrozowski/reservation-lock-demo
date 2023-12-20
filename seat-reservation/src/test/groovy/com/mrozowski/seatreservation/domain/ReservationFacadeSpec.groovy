@@ -7,9 +7,10 @@ import spock.lang.Subject
 class ReservationFacadeSpec extends Specification {
 
   def tripService = Mock(TripService)
+  def paymentService = Mock(PaymentService)
   def reservationService = Mock(ReservationService)
   @Subject
-  def underTest = new ReservationFacade(tripService, reservationService)
+  def underTest = new ReservationFacade(tripService, paymentService, reservationService)
 
   def "should call repository and return list of trips"() {
     given:

@@ -1,5 +1,6 @@
 package com.mrozowski.seatreservation.adapter.incoming
 
+import com.mrozowski.seatreservation.domain.command.InitializePaymentCommand
 import com.mrozowski.seatreservation.domain.model.*
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageImpl
@@ -25,9 +26,11 @@ class Fixtures {
   static final String PAGE_NUMBER = "1"
   static final String SIZE = "30"
   static final String TRIP_ID = "WJ311823F"
+  static final String CLIENT_SECRET = "client-secret-123"
 
   static final String NOT_FOUND_ERROR = "NOT_FOUND"
   static final String SUCCESS = "SUCCESS"
+  static final String CURRENCY_USD = "usd"
 
   static final String REFERENCE_KEY = "reference"
   static final String CUSTOMER_NAME_KEY = "name"
@@ -88,5 +91,7 @@ class Fixtures {
       .token(SESSION_TOKEN)
       .build()
 
-  static final ReservationConfirmation RESERVATION_CONFIRMATION = ReservationConfirmation.of(REFERENCE_NUMBER, PRICE)
+  static final ReservationConfirmation RESERVATION_CONFIRMATION = ReservationConfirmation.of(REFERENCE_NUMBER, RESERVATION_ID, PRICE)
+  static final InitializePaymentCommand INIT_PAYMENT_COMMAND = InitializePaymentCommand.stripe(PRICE, String.valueOf(RESERVATION_ID), CURRENCY_USD)
+  static final PaymentIntentDetails PAYMENT_INTENT_DETAILS = new PaymentIntentDetails(CLIENT_SECRET, PRICE, String.valueOf(RESERVATION_ID))
 }

@@ -48,7 +48,7 @@ class ReservationServiceSpec extends Specification {
         >> tokenConfirmation
     1 * tripRepository.getTripById(Fixtures.TRIP_ID) >> Fixtures.TRIPS[0]
     1 * referenceGenerator.generate() >> Fixtures.REFERENCE_NUMBER
-    1 * reservationRepository.save(Fixtures.RESERVATION_REQUEST_COMMAND, Fixtures.REFERENCE_NUMBER, tokenConfirmation.seatId(), Fixtures.PRICE)
+    1 * reservationRepository.save(Fixtures.RESERVATION_REQUEST_COMMAND, Fixtures.REFERENCE_NUMBER, tokenConfirmation.seatId(), Fixtures.PRICE) >> Fixtures.RESERVATION_ID
 
     when:
     def result = underTest.process(Fixtures.RESERVATION_REQUEST_COMMAND)

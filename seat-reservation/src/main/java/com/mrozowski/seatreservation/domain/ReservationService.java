@@ -40,8 +40,9 @@ class ReservationService {
     if (userSessionConfirmation.isValid()) {
       var trip = tripRepository.getTripById(reservationRequestCommand.tripId());
       var reference = bookingReferenceGenerator.generate();
-      reservationRepository.save(reservationRequestCommand, reference, userSessionConfirmation.seatId(), trip.price());
-      return ReservationConfirmation.of(reference, trip.price());
+      var reservationId = reservationRepository.save(reservationRequestCommand, reference,
+          userSessionConfirmation.seatId(), trip.price());
+      return ReservationConfirmation.of(reference, reservationId, trip.price());
     } else if (userSessionConfirmation.isExpired()) {
       log.info("Failed to save reservation due to expired session token");
       throw new SessionExpiredException();

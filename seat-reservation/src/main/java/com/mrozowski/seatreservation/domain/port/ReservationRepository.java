@@ -14,5 +14,5 @@ public interface ReservationRepository {
   @Transactional
   CancellationMessage cancelReservation(String reference, String name);
 
-  void save(ReservationRequestCommand reservationRequestCommand, String reference, long seatId, int price);
+  long save(ReservationRequestCommand reservationRequestCommand, String reference, long seatId, int price);
 }

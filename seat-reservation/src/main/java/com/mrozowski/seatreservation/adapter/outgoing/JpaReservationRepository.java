@@ -40,7 +40,7 @@ class JpaReservationRepository implements ReservationRepository {
   }
 
   @Override
-  public void save(ReservationRequestCommand reservationRequestCommand, String reference, long seatId, int price) {
+  public long save(ReservationRequestCommand reservationRequestCommand, String reference, long seatId, int price) {
     var entity = new ReservationEntity();
     var seatEntityProxy = entityManager.getReference(SeatEntity.class, seatId);
     var tripEntityProxy = entityManager.getReference(TripEntity.class, reservationRequestCommand.tripId());
@@ -52,7 +52,8 @@ class JpaReservationRepository implements ReservationRepository {
     entity.setSeat(seatEntityProxy);
     entity.setTrip(tripEntityProxy);
     entity.setCreatedAt(OffsetDateTime.now());
-    reservationRepository.save(entity);
+    var reservationEntity = reservationRepository.save(entity);
+    return reservationEntity.getId();
   }
 
   private ReservationDetails toReservationDetails(ReservationEntity reservationEntity) {

@@ -18,6 +18,7 @@ class Fixtures {
   static final int PAGE_NUMBER = 1
   static final int SIZE = 30
   static final String TRIP_ID = "AB123T"
+  static final long RESERVATION_ID = 25L
   static final int PRICE = 100
   static final String REFERENCE_NUMBER = "WLCS24"
   static final String CUSTOMER_FULL_NAME = "John Doe"
@@ -26,7 +27,6 @@ class Fixtures {
   static final String SESSION_TOKEN = "Basic session-token-0"
   static final ReservationDetails.ReservationStatus RESERVATION_CONFIRMED = ReservationDetails.ReservationStatus.CONFIRMED
   static final OffsetDateTime OFFSET_DATE_TIME = OffsetDateTime.of(2024, 5, 7, 10, 00, 00, 0, ZoneOffset.UTC)
-
 
   static List<Trip> TRIPS =
       [Trip.builder()
@@ -54,7 +54,7 @@ class Fixtures {
   static final String CUSTOMER_SURNAME = "Doe"
   static final String CUSTOMER_PHONE = "700123567"
   static final String CUSTOMER_EMAIL = "Doe@gmail.com"
-  static final ReservationConfirmation RESERVATION_CONFIRMATION = ReservationConfirmation.of(REFERENCE_NUMBER, PRICE)
+  static final ReservationConfirmation RESERVATION_CONFIRMATION = ReservationConfirmation.of(REFERENCE_NUMBER, RESERVATION_ID, PRICE)
   static final ReservationRequestCommand RESERVATION_REQUEST_COMMAND = ReservationRequestCommand.builder()
       .name(CUSTOMER_NAME)
       .surname(CUSTOMER_SURNAME)

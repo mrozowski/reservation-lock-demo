@@ -1,5 +1,6 @@
 package com.mrozowski.seatreservation.domain;
 
+import com.mrozowski.seatreservation.domain.command.InitializePaymentCommand;
 import com.mrozowski.seatreservation.domain.command.TripFilterCommand;
 import com.mrozowski.seatreservation.domain.model.*;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import java.util.Optional;
 public class ReservationFacade {
 
   private final TripService tripService;
+  private final PaymentService paymentService;
   private final ReservationService reservationService;
 
   public Page<Trip> getTripList(TripFilterCommand command) {
@@ -37,5 +39,9 @@ public class ReservationFacade {
 
   public ReservationConfirmation process(ReservationRequestCommand reservationRequestCommand) {
     return reservationService.process(reservationRequestCommand);
+  }
+
+  public PaymentIntentDetails initializePayment(InitializePaymentCommand initializePaymentCommand) {
+    return paymentService.initializePayment(initializePaymentCommand);
   }
 }

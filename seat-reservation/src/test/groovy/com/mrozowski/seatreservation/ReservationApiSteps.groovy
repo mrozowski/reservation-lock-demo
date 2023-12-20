@@ -21,6 +21,7 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
   private static final String RESERVATION_DETAILS_RESPONSE_KEY = "reservationDetails"
   private static final String CANCEL_RESERVATION_RESPONSE_KEY = "cancellationResponse"
   private static final String REFERENCE_NUMBER_KEY = "referenceNumber"
+  private static final String RESERVATION_ID_KEY = "reservationId"
   private static final String SESSION_TOKEN_KEY = "sessionToken"
   private static final String SESSION_TOKEN_EXPIRE_KEY = "sessionTokenExpirationDate"
   private static final String TRIP_ID_KEY = "tripId"
@@ -169,10 +170,12 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
       def reservationRespond = new JsonSlurper().parseText(restApiClient.responseAsText)
 
       assert reservationRespond.price == 25000
+      assert reservationRespond.reservationId == 2
       assert StringUtils.isNotBlank(reservationRespond.reference)
 
       scenarioContext.put(PRICE_KEY, reservationRespond.price)
       scenarioContext.put(REFERENCE_NUMBER_KEY, reservationRespond.reference)
+      scenarioContext.put(RESERVATION_ID_KEY, reservationRespond.reservationId)
 
     } catch (Exception e) {
       print "There was an error during REST call: ${e.message}"
@@ -186,14 +189,15 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
     def price = scenarioContext.get(PRICE_KEY) as String
     def sessionToken = scenarioContext.get(SESSION_TOKEN_KEY) as String
     def bookingReference = scenarioContext.get(REFERENCE_NUMBER_KEY) as String
+    def reservationId = scenarioContext.get(RESERVATION_ID_KEY) as String
 
     def intentRequestTemplate = getClass().getResourceAsStream("/json/stripIntentTemplate.json").text
     def intentRequest = JsonTemplate.newTemplate(intentRequestTemplate)
-        .binding(["reference": bookingReference, "price": price])
+        .binding(["reference": bookingReference, "reservationId": reservationId, "price": price])
         .generate()
 
     try (var restApiClient = newConnection()
-        .url("${baseUrl()}/v1/reservation/payment/create-intent")
+        .url("${baseUrl()}/v1/payment/stripe/create-intent")
         .addJsonBody(intentRequest)
         .addHeader(HTTPHeader.sessionToken(sessionToken))
         .requestMethod(POST)
@@ -208,10 +212,12 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
       throw e
     }
 
-    def paymentConfirmationTemplate = getClass().getResourceAsStream("json/stripeConfirmationTemplate.json").text
+    // Simulate call from Payment service to webhook with payment confirmation
+    def paymentConfirmationTemplate = getClass().getResourceAsStream("/json/stripeConfirmationTemplate.json").text
     def createdAt = System.currentTimeMillis() / 1000
     def webhookRequest = JsonTemplate.newTemplate(paymentConfirmationTemplate)
         .binding(["clientSecret": clientSecret,
+                  "productId"   : reservationId,
                   "price"       : price,
                   "createdAt"   : createdAt,
                   "paymentId"   : UUID.randomUUID().toString()])
