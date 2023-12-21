@@ -1,5 +1,8 @@
 package com.mrozowski.seatreservation.adapter.outgoing;
 
+import com.mrozowski.seatreservation.domain.command.PaymentConfirmationCommand;
+import com.mrozowski.seatreservation.domain.command.ResourceNotFoundException;
+import com.mrozowski.seatreservation.domain.exception.DataSourceException;
 import com.mrozowski.seatreservation.domain.model.CancellationMessage;
 import com.mrozowski.seatreservation.domain.model.ReservationDetails;
 import com.mrozowski.seatreservation.domain.model.ReservationRequestCommand;
@@ -54,6 +57,25 @@ class JpaReservationRepository implements ReservationRepository {
     entity.setCreatedAt(OffsetDateTime.now());
     var reservationEntity = reservationRepository.save(entity);
     return reservationEntity.getId();
+  }
+
+  @Override
+  public void updatePayment(PaymentConfirmationCommand command) {
+    try {
+      var status = mapReservationStatus(command);
+      var updatedRows = reservationRepository.updatePaymentStatus(command.productId(), status);
+      if (updatedRows == 0) throw new ResourceNotFoundException("Reservation id " + command.productId() + " not found");
+    } catch (HibernateException e) {
+      log.error("Error during updating payment reservation with id: {}, message {}", command.productId(),
+          e.getMessage(), e);
+      throw new DataSourceException("Failed to update Reservation with id: " + command.productId(), e);
+    }
+  }
+
+  private ReservationEntity.PaymentStatus mapReservationStatus(PaymentConfirmationCommand command) {
+    return command.isSuccessful() ?
+        ReservationEntity.PaymentStatus.CONFIRMED :
+        ReservationEntity.PaymentStatus.CANCELED;
   }
 
   private ReservationDetails toReservationDetails(ReservationEntity reservationEntity) {

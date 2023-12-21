@@ -88,4 +88,15 @@ class JpaReservationRepositorySpec extends Specification {
     then:
     result.status().toString() == "ERROR"
   }
+
+  def "should update payment status"() {
+    given:
+    1 * repository.updatePaymentStatus(Fixtures.RESERVATION_ID, Fixtures.RESERVATION_CONFIRMED_STATUS) >> 1
+
+    when:
+    underTest.updatePayment(Fixtures.PAYMENT_CONFIRMATION_COMMAND)
+
+    then:
+    noExceptionThrown()
+  }
 }

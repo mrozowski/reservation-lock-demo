@@ -18,4 +18,8 @@ interface CrudReservationRepository extends CrudRepository<ReservationEntity, Lo
       " = :customerName")
   int cancelReservation(@Param("reference") String reference, @Param("customerName") String customerName);
 
+  @Modifying
+  @Query("UPDATE ReservationEntity r SET r.paymentStatus = :status WHERE r.id = :reservationId")
+  int updatePaymentStatus(@Param("reservationId") String reservationId,
+                          @Param("status") ReservationEntity.PaymentStatus status);
 }

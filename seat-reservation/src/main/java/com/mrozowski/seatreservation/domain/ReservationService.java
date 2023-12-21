@@ -1,5 +1,6 @@
 package com.mrozowski.seatreservation.domain;
 
+import com.mrozowski.seatreservation.domain.command.PaymentConfirmationCommand;
 import com.mrozowski.seatreservation.domain.exception.InvalidTokenException;
 import com.mrozowski.seatreservation.domain.exception.SessionExpiredException;
 import com.mrozowski.seatreservation.domain.model.CancellationMessage;
@@ -33,7 +34,7 @@ class ReservationService {
     return reservationRepository.cancelReservation(reference, name);
   }
 
-  public ReservationConfirmation process(ReservationRequestCommand reservationRequestCommand) {
+  ReservationConfirmation process(ReservationRequestCommand reservationRequestCommand) {
     var userSessionConfirmation = seatRepository.confirmUserLockSeatSessionToken(
         reservationRequestCommand.tripId(), reservationRequestCommand.seatNumber(), reservationRequestCommand.token());
 
@@ -50,5 +51,10 @@ class ReservationService {
       log.info("Failed to save reservation due to invalid session token: {}", reservationRequestCommand.token());
       throw new InvalidTokenException("Reservation could not be completed due to invalid session token");
     }
+  }
+
+  void updateReservationPayment(PaymentConfirmationCommand command) {
+    log.info("Updating payment status, reservationId: {}, status: {}", command.productId(), command.status());
+    reservationRepository.updatePayment(command);
   }
 }

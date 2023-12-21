@@ -8,7 +8,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 @Configuration
-@EnableConfigurationProperties({ReservationDateProperties.class, ReservationSeatLockProperties.class})
+@EnableConfigurationProperties({
+    ReservationDateProperties.class, ReservationSeatLockProperties.class, ReservationPaymentProperties.class})
 class ReservationConfiguration {
 
   @Bean

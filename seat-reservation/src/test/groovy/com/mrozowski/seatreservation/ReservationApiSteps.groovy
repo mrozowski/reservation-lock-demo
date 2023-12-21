@@ -241,7 +241,7 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
     def encodedClientName = URLEncoder.encode("John Doe", "UTF-8")
     try (var restApiClient = newConnection()
         .url("${baseUrl()}/v1/reservations/details?reference=${reference}&name=${encodedClientName}")
-        .requestMethod(DELETE)
+        .requestMethod(GET)
         .connect()) {
 
       restApiClient.assertStatusCode(200)

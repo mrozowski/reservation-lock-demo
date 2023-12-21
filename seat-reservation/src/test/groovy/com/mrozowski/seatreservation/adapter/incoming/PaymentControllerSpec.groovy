@@ -1,6 +1,7 @@
 package com.mrozowski.seatreservation.adapter.incoming
 
 import com.mrozowski.seatreservation.domain.ReservationFacade
+import com.mrozowski.seatreservation.infrastructure.ReservationPaymentProperties
 import org.springframework.http.MediaType
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
@@ -13,7 +14,9 @@ class PaymentControllerSpec extends Specification {
 
   private MockMvc mockMvc
   private ReservationFacade reservationFacade = Mock()
-  def underTest = new PaymentController(reservationFacade)
+  def properties = new ReservationPaymentProperties(
+      ["stripe": new ReservationPaymentProperties.PaymentMethod("succeeded")])
+  def underTest = new PaymentController(properties, reservationFacade)
 
   def setup() {
     mockMvc = MockMvcBuilders.standaloneSetup(underTest).build()

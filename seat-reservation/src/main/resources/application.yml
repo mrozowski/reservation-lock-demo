@@ -19,3 +19,7 @@ reservation:
     date-format: 'dd-MM-yyyy'
   seat-lock:
     expiration-time: 20m
+  payment:
+    types:
+      stripe:
+        successful-payment-status: 'succeeded'

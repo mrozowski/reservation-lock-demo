@@ -1,6 +1,7 @@
 package com.mrozowski.seatreservation.domain;
 
 import com.mrozowski.seatreservation.domain.command.InitializePaymentCommand;
+import com.mrozowski.seatreservation.domain.command.PaymentConfirmationCommand;
 import com.mrozowski.seatreservation.domain.command.TripFilterCommand;
 import com.mrozowski.seatreservation.domain.model.*;
 import lombok.RequiredArgsConstructor;
@@ -43,5 +44,9 @@ public class ReservationFacade {
 
   public PaymentIntentDetails initializePayment(InitializePaymentCommand initializePaymentCommand) {
     return paymentService.initializePayment(initializePaymentCommand);
+  }
+
+  public void updatePayment(PaymentConfirmationCommand command) {
+    reservationService.updateReservationPayment(command);
   }
 }

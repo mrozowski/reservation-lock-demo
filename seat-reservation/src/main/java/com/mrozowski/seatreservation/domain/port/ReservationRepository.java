@@ -1,5 +1,6 @@
 package com.mrozowski.seatreservation.domain.port;
 
+import com.mrozowski.seatreservation.domain.command.PaymentConfirmationCommand;
 import com.mrozowski.seatreservation.domain.model.CancellationMessage;
 import com.mrozowski.seatreservation.domain.model.ReservationDetails;
 import com.mrozowski.seatreservation.domain.model.ReservationRequestCommand;
@@ -15,4 +16,7 @@ public interface ReservationRepository {
   CancellationMessage cancelReservation(String reference, String name);
 
   long save(ReservationRequestCommand reservationRequestCommand, String reference, long seatId, int price);
+
+  @Transactional
+  void updatePayment(PaymentConfirmationCommand command);
 }
