@@ -57,8 +57,12 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
     log.info("Validating json response: {}", jsonBodyResponse)
 
     def response = new JsonSlurper().parseText(jsonBodyResponse)
-    // assert StringUtils.isNoneBlank(response)
-    // TODO: Implement other assertions
+    assert response.reference == reference
+    assert response.status == "CONFIRMED"
+    assert StringUtils.isNotBlank(response.seatNumber)
+    assert StringUtils.isNotBlank(response.departure)
+    assert StringUtils.isNotBlank(response.destination)
+    assert StringUtils.isNotBlank(response.customerName)
 
     log.info("The response is valid")
   }
@@ -238,6 +242,7 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
   @And("the user receives confirmation details")
   def userReceivesConfirmationDetails() {
     def reference = scenarioContext.get(REFERENCE_NUMBER_KEY) as String
+    def seatNumber = scenarioContext.get(SEAT_NUMBER_KEY) as String
     def encodedClientName = URLEncoder.encode("John Doe", "UTF-8")
     try (var restApiClient = newConnection()
         .url("${baseUrl()}/v1/reservations/details?reference=${reference}&name=${encodedClientName}")
@@ -247,7 +252,13 @@ class ReservationApiSteps extends SpringIntegrationSpecBase {
       restApiClient.assertStatusCode(200)
       def response = new JsonSlurper().parseText(restApiClient.responseAsText)
       // assert StringUtils.isNoneBlank(response)
-      // TODO: Implement assertions
+      assert response.reference == reference
+      assert response.seatNumber == seatNumber
+      assert response.status == "CONFIRMED"
+      assert StringUtils.isNotBlank(response.departure)
+      assert StringUtils.isNotBlank(response.destination)
+      assert StringUtils.isNotBlank(response.customerName)
+
     } catch (Exception e) {
       print "There was an error during REST call: ${e.message}"
     }
