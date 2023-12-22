@@ -7,11 +7,13 @@ import com.mrozowski.seatreservation.domain.model.TripSeatDetails;
 import com.mrozowski.seatreservation.domain.model.UserSeatSessionTokenConfirmation;
 import com.mrozowski.seatreservation.domain.port.SeatRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 class JpaSeatRepository implements SeatRepository {
@@ -35,8 +37,8 @@ class JpaSeatRepository implements SeatRepository {
   }
 
   @Override
-  public UserSeatSessionTokenConfirmation confirmUserLockSeatSessionToken(String tripId, String seatNumber,
-                                                                          String sessionToken) {
+  public UserSeatSessionTokenConfirmation confirmUserLockSeatSessionToken(
+      String tripId, String seatNumber, String sessionToken) {
     var seatEntity = getSeatEntity(tripId, seatNumber);
     if (isSessionTokenValid(sessionToken, seatEntity)) {
       if (isSessionExpired(seatEntity)) {
@@ -47,6 +49,13 @@ class JpaSeatRepository implements SeatRepository {
     } else {
       return UserSeatSessionTokenConfirmation.invalid(seatEntity.getId());
     }
+  }
+
+  @Override
+  public void releaseExpiredLock() {
+    log.info("Releasing expired locks");
+    int releasedExpiredLocks = seatRepository.releaseExpiredLocks();
+    log.info("Released {} expired locks", releasedExpiredLocks);
   }
 
   private static boolean isSessionExpired(SeatEntity seatEntity) {

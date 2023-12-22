@@ -16,4 +16,6 @@ public interface SeatRepository {
   UserSeatSessionTokenConfirmation confirmUserLockSeatSessionToken(String tripId,
                                                                    String seatNumber,
                                                                    String sessionToken);
+  @Transactional
+  void releaseExpiredLock();
 }

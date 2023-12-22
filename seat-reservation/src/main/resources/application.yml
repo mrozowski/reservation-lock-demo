@@ -19,6 +19,7 @@ reservation:
     date-format: 'dd-MM-yyyy'
   seat-lock:
     expiration-time: 20m
+    scheduler: '0 0/10 * * * ?' # Run scheduler job every 10 minutes
   payment:
     types:
       stripe:

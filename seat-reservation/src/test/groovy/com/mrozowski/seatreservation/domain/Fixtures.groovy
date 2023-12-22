@@ -24,7 +24,7 @@ class Fixtures {
   static final String CUSTOMER_FULL_NAME = "John Doe"
   static final String SEAT_NUMBER = "C15"
   static final long SEAT_ID = 10L
-  static final String SESSION_TOKEN = "Basic session-token-0"
+  static final String SESSION_TOKEN = "Basic 992002e7-0b87-48e7-bc9a-af09ae26fe0d"
   static final ReservationDetails.ReservationStatus RESERVATION_CONFIRMED = ReservationDetails.ReservationStatus.CONFIRMED
   static final OffsetDateTime OFFSET_DATE_TIME = OffsetDateTime.of(2024, 5, 7, 10, 00, 00, 0, ZoneOffset.UTC)
 

@@ -10,7 +10,7 @@ import java.time.OffsetDateTime
 class BasicTokenGeneratorSpec extends Specification {
 
   def duration = Duration.ofMinutes(20)
-  def properties = new ReservationSeatLockProperties(duration)
+  def properties = new ReservationSeatLockProperties(duration, "0 0/10 * * * ?")
 
   @Subject
   def underTest = new BasicTokenGenerator(properties)

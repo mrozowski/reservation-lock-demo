@@ -25,4 +25,9 @@ interface CrudSeatRepository extends CrudRepository<SeatEntity, Long> {
                @Param("seatNumber") String seatNumber,
                @Param("sessionToken") String sessionToken,
                @Param("expirationDateTime") OffsetDateTime expirationDateTime);
+
+  @Modifying
+  @Query("UPDATE SeatEntity s SET s.status = 'AVAILABLE'" +
+      "WHERE s.status = 'LOCKED' and s.lockExpirationTime < current_timestamp")
+  int releaseExpiredLocks();
 }
