@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservation-backend
+spec:
+  selector:
+    matchLabels:
+      app: reservation-backend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: reservation-backend
+    spec:
+      containers:
+        - name: reservation-backend
+          image: mrozowski/reservation-backend-demo:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - configMapRef:
+                name: reservation-system-config

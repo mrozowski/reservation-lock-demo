@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: reservation-system-config
+data:
+  spring.datasource.url: "jdbc:postgresql://postgres:5432/resdb"
+  SPRING_PROFILES_ACTIVE: "test"
