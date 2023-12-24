@@ -2,7 +2,7 @@
     --primary-color: #7BCEF3;
     --secondary-color: #FBF4EF;
     --accent-color: #08577B;
-    --background-color: #FBF4EF;
+    --accent-hover-color: rgba(8, 87, 123, 0.85);
+    --background-color: #F5F5F5;
     --text-color: #1E1E1E;
-    --border-color: #ced4da;
 }
