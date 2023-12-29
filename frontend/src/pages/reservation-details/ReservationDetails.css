@@ -1,0 +1,94 @@
+.reservation-container{
+    border-radius: 20px;
+    background: rgba(153, 215, 242, 0.7);
+    box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.15);
+    height: 40vh;
+    width: 30vw;
+    min-width: 15rem;
+    max-width: 20rem;
+    padding: 1rem 5rem;
+    margin-top: 5rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.reservation-container > h1{
+    text-align: center;
+}
+
+.reservation-search-options{
+    display: flex;
+    flex-direction: column;
+}
+
+.button-wrapper{
+    margin: 1.5rem auto;
+}
+
+/* ------- */
+
+.reservation-details-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+
+.reservation-details-container .title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.reservation-details-container .indent {
+    margin-left: 1.3rem;
+}
+
+.reservation-details-container .card-section {
+    margin-top: 1.3rem;
+}
+
+.reservation-details-container .emphasis-text{
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.copy-icon {
+    cursor: pointer;
+}
+
+.flight-details {
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+.details-columns {
+    display: flex;
+    margin-top: 10px;
+}
+
+.reservation-details-container .column {
+    margin-right: 3rem;
+}
+
+.reservation-details-container .details-name{
+    margin: 1rem 0;
+    display: inline-block;
+    width: 150px;
+}
+
+.gray-divider {
+    border: 2px solid var(--gray-color);
+    margin-top: 1.3rem;
+    width: 100%;
+}
+
+.customer-details {
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+.cancel-button {
+    align-self: flex-end;
+    margin-top: 20px;
+}

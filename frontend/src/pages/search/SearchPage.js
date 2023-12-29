@@ -68,7 +68,7 @@ const SearchPage = () => {
     }, []);
 
     return (
-        <div className="container">
+        <div className="search-page-container main-container">
             <div className="search-bar-container">
                 <div className="search-option">
                     <label>Date</label>

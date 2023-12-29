@@ -6,8 +6,8 @@ import logo from '../../assets/logo.svg'
 const TopBar = () => {
     return (
         <div className="top-bar">
-            <div className="top-bar-container">
-                <img src={logo} alt="Your Logo"/>
+            <div className="top-bar-container main-container">
+                <img src={logo} alt="Logo"/>
                 <div className="menu-buttons">
                     <Link to="/" className="menu-button">
                         <button>Home</button>

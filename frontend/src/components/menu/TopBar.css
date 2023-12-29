@@ -4,9 +4,6 @@
     background-color: var(--secondary-color);
 }
 .top-bar-container{
-    width: 1100px;
-    margin: 0 auto;
-    display: flex;
     justify-content: space-between;
 }
 
@@ -29,7 +26,6 @@
     cursor: pointer;
 }
 
-/* Add hover or active styles for buttons if desired */
 .menu-buttons button:hover {
     background-color: var(--primary-color);
 }
