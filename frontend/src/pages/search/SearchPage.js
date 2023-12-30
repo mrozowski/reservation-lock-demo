@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import apiService from '../../services/apiService';
+import ApiService from '../../services/apiService';
 import RectangleCard from "../../components/card/RectangleCard";
 import TextFormatter from "../../utils/TextFormatter";
 import './SearchPage.css'
@@ -35,7 +35,7 @@ const SearchPage = () => {
     const fetchData2 = async () => {
         try {
             // Fetch trips using the apiService
-            const tripsData = await apiService.getTrips({
+            const tripsData = await ApiService.getTrips({
                 size: 10,
                 page: searchQuery.page,
                 departure: searchQuery.departure,
@@ -55,7 +55,7 @@ const SearchPage = () => {
         const fetchData = async () => {
             try {
                 // Fetch trips using the apiService
-                const tripsData = await apiService.getTrips({size: 10, page: 1});
+                const tripsData = await ApiService.getTrips({size: 10, page: 1});
                 setTrips(tripsData.content);
                 setLoading(false);
             } catch (error) {

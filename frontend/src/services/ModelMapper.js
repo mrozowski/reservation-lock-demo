@@ -1,5 +1,6 @@
 import ReservationDetailsModel from "../models/ReservationDetailsModel";
 import TextFormatter from "../utils/TextFormatter";
+import CancellationDetailsModel from "../models/CancellationDetailsModel";
 
 const ModelMapper = {
     mapReservationDetails: (data) => {
@@ -15,6 +16,11 @@ const ModelMapper = {
             data.customerName,
             data.status
         );
+    },
+
+    mapCancellationDetails: (data) => {
+        console.log("mapping: ", data);
+        return new CancellationDetailsModel(data.status, data.message);
     }
 }
 

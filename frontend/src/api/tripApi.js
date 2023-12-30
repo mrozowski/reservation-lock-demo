@@ -3,6 +3,7 @@ import {API_BASE_URL} from './apiConfig';
 
 const TRIP_API_ENDPOINT = 'v1/trips/search';
 const RESERVATION_DETAILS_API_ENDPOINT = 'v1/reservations/details';
+const CANCEL_RESERVATION_API_ENDPOINT = 'v1/reservations/cancel';
 
 const getTrips = async ({size, page, date, destination, departure}) => {
     try {
@@ -24,7 +25,6 @@ const getReservationDetails = async ({reference, clientName}) => {
             params: {reference: reference, name: clientName},
         });
 
-        console.log(response)
         return response.data;
     } catch (error) {
         // Handle error, e.g., log it or throw a custom error
@@ -33,4 +33,17 @@ const getReservationDetails = async ({reference, clientName}) => {
     }
 };
 
-export {getTrips, getReservationDetails};
+const cancelReservation = async ({reference, clientName}) => {
+    try {
+        const response = await axios.delete(`${API_BASE_URL}${CANCEL_RESERVATION_API_ENDPOINT}`, {
+            params: {reference: reference, name: clientName},
+        });
+        return response.data;
+    } catch (error) {
+        // Handle error, e.g., log it or throw a custom error
+        console.error('Error fetching trips:', error);
+        throw error;
+    }
+};
+
+export {getTrips, getReservationDetails, cancelReservation};

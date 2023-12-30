@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import apiService from '../../services/apiService';
+import ApiService from '../../services/apiService';
 import DefaultButton from "../../components/button/DefaultButton";
 import Input from "../../components/input/Input";
 import './ReservationDetails.css'
@@ -20,7 +20,7 @@ const ReservationDetailsForm = ({onSubmit}) => {
 
     const handleFormSubmit = async () => {
         try {
-            const tripsData = await apiService.getReservationDetails({
+            const tripsData = await ApiService.getReservationDetails({
                 reference: searchQuery.reference,
                 clientName: searchQuery.clientName
             });

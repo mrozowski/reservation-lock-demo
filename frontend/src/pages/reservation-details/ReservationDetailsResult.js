@@ -1,12 +1,38 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './ReservationDetails.css'
 import DefaultButton from "../../components/button/DefaultButton";
+import ConfirmationPopup from "../../components/popup/ConfirmationPopup";
+import ApiService from "../../services/apiService";
 
 
 const ReservationDetailsResult = ({details}) => {
+    const [isPopupVisible, setPopupVisibility] = useState(false);
 
     const handleButtonClick = () => {
         console.log("click & canceled")
+        setPopupVisibility(true);
+    }
+
+    const handleCancelReservationActionConfirmed = async () => {
+        console.log("User Canceled reservation")
+        try {
+            const cancellation = await ApiService.cancelReservation({
+                reference: details.reference,
+                clientName: details.customerName
+            });
+            // show toast
+            console.log("Reservation canceled")
+        } catch (error) {
+            // Handle error
+            console.log("error: " + error)
+        }
+        setPopupVisibility(false);
+    }
+
+    const handleCancelReservationActionCanceled = () => {
+        console.log("User abort action")
+        // show toast
+        setPopupVisibility(false);
     }
 
     function copyToClipboard(reference) {
@@ -20,10 +46,11 @@ const ReservationDetailsResult = ({details}) => {
                 <div>
                     <div className="title">Reservation</div>
                     <div className="indent">
-                        Reference Nr.: <span className="reference-value emphasis-text">{details.reference}</span>
+                        <p className="details-name">Reference Nr.:</p> <span className="reference-value emphasis-text">{details.reference}</span>
                         <span className="copy-icon" onClick={() => copyToClipboard(details.reference)}>
             &#128203;
           </span>
+                        <div><p className="details-name">Status:</p> {details.status}</div>
                     </div>
                     <div className="title card-section">Flight Details</div>
                 </div>
@@ -59,6 +86,13 @@ const ReservationDetailsResult = ({details}) => {
                     <DefaultButton text="Cancel" clickEvent={handleButtonClick}></DefaultButton>
                 </div>
             </div>
+            {isPopupVisible && (
+                <ConfirmationPopup
+                    text="Are you sure you want to cancel the reservation?"
+                    onCancel={handleCancelReservationActionCanceled}
+                    onConfirm={handleCancelReservationActionConfirmed}
+                />
+            )}
         </div>
     );
 };
