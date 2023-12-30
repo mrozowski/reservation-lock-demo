@@ -4,7 +4,7 @@ import RectangleCard from "../../components/card/RectangleCard";
 import TextFormatter from "../../utils/TextFormatter";
 import './SearchPage.css'
 
-const SearchPage = () => {
+const SearchPage = (onTripClick) => {
     const [trips, setTrips] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState({
@@ -22,8 +22,9 @@ const SearchPage = () => {
         }));
     };
 
-    const handleTripCardClick = (tripId) => {
-        console.log('Trip card clicked:', tripId);
+    const handleTripCardClick = (trip) => {
+        console.log('Trip card clicked:', trip.id);
+        onTripClick(trip);
     };
 
     const handleSearchSubmit = () => {
@@ -57,6 +58,7 @@ const SearchPage = () => {
                 // Fetch trips using the apiService
                 const tripsData = await ApiService.getTrips({size: 10, page: 1});
                 setTrips(tripsData.content);
+                console.log(tripsData);
                 setLoading(false);
             } catch (error) {
                 // Handle error
@@ -112,7 +114,7 @@ const SearchPage = () => {
                             title={trip.departure + " - " + trip.destination}
                             price={TextFormatter.formatPrice(trip.price, "USD")}
                             dateTime={TextFormatter.formatDate(trip.date)}
-                            clickEvent={(()=> handleTripCardClick(trip.id))}
+                            clickEvent={(()=> handleTripCardClick(trip))}
                         />
                     ))}
                 </div>
