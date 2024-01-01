@@ -37,7 +37,7 @@ class TripController {
   private final ReservationFacade reservationFacade;
 
   @GetMapping("/search")
-  ResponseEntity<Page<Trip>> isAvailable(
+  ResponseEntity<Page<Trip>> getTripList(
       @RequestParam(defaultValue = "") String date,
       @RequestParam(defaultValue = "") String departure,
       @RequestParam(defaultValue = "") String destination,

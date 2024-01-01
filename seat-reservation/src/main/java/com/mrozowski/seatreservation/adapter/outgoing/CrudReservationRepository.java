@@ -14,7 +14,7 @@ interface CrudReservationRepository extends CrudRepository<ReservationEntity, Lo
   Optional<ReservationEntity> findFirstByReferenceAndCustomerName(String reference, String customerName);
 
   @Modifying
-  @Query("UPDATE ReservationEntity r SET r.paymentStatus = 'CANCEL' WHERE r.reference = :reference AND r.customerName" +
+  @Query("UPDATE ReservationEntity r SET r.paymentStatus = 'CANCELED' WHERE r.reference = :reference AND r.customerName" +
       " = :customerName")
   int cancelReservation(@Param("reference") String reference, @Param("customerName") String customerName);
 
