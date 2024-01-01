@@ -1,4 +1,4 @@
-import { getTrips, getReservationDetails, cancelReservation } from '../api/tripApi';
+import {getTrips, getReservationDetails, cancelReservation, getSeats} from '../api/TripApi';
 import ModelMapper from "./ModelMapper";
 
 const ApiService = {
@@ -6,7 +6,7 @@ const ApiService = {
         try {
             const trips = await getTrips({ size, page, date, destination, departure });
             // can do mapping into internal object
-            return trips;
+            return ModelMapper.mapPageOfTrips(trips);
         } catch (error) {
             // Handle error, e.g., log it or throw a custom error
             console.error('API Service Error:', error);
@@ -28,6 +28,17 @@ const ApiService = {
         try{
             const data = await cancelReservation({ reference, clientName });
             return ModelMapper.mapCancellationDetails(data);
+        } catch (error) {
+            console.error('API Service Error:', error);
+            throw error;
+        }
+    },
+
+    getSeats: async ({tripId}) =>{
+        try{
+            const data = await getSeats({tripId});
+            console.log(data);
+            return data;
         } catch (error) {
             console.error('API Service Error:', error);
             throw error;

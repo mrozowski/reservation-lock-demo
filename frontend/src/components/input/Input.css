@@ -1,7 +1,22 @@
 .ui-input{
+
+}
+
+.input-label-top{
     display: flex;
     flex-direction: column;
     margin: 0.5rem;
+}
+
+.input-label-left{
+    display: flex;
+    margin: 0.5rem;
+    align-items: center;
+}
+
+.ui-input > label{
+    margin-right: 0.5rem;
+    width: 100px;
 }
 
 .ui-input > input{

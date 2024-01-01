@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import ApiService from '../../services/apiService';
+import ApiService from '../../services/ApiService';
 import RectangleCard from "../../components/card/RectangleCard";
-import TextFormatter from "../../utils/TextFormatter";
+import Navigator from "../../utils/Navigator";
 import './SearchPage.css'
 
-const SearchPage = (onTripClick) => {
+const SearchPage = () => {
+    const {navigateToTripReservationPage} = Navigator();
     const [trips, setTrips] = useState([]);
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState({
@@ -22,20 +23,12 @@ const SearchPage = (onTripClick) => {
         }));
     };
 
-    const handleTripCardClick = (trip) => {
-        console.log('Trip card clicked:', trip.id);
-        onTripClick(trip);
-    };
-
     const handleSearchSubmit = () => {
-        // Perform the search based on the searchQuery
-        console.log('Search Query:', searchQuery);
-        fetchData2()
+        fetchData();
     };
 
-    const fetchData2 = async () => {
+    const fetchData = async () => {
         try {
-            // Fetch trips using the apiService
             const tripsData = await ApiService.getTrips({
                 size: 10,
                 page: searchQuery.page,
@@ -46,28 +39,18 @@ const SearchPage = (onTripClick) => {
             setTrips(tripsData.content);
             setLoading(false);
         } catch (error) {
-            // Handle error
             setLoading(false);
+            // Handle error
         }
     };
 
     useEffect(() => {
-        console.log("fetching data")
-        const fetchData = async () => {
-            try {
-                // Fetch trips using the apiService
-                const tripsData = await ApiService.getTrips({size: 10, page: 1});
-                setTrips(tripsData.content);
-                console.log(tripsData);
-                setLoading(false);
-            } catch (error) {
-                // Handle error
-                setLoading(false);
-            }
-        };
-
         fetchData();
     }, []);
+
+    const handleTripCardClick = (trip) => {
+        navigateToTripReservationPage(trip);
+    };
 
     return (
         <div className="search-page-container main-container">
@@ -112,9 +95,9 @@ const SearchPage = (onTripClick) => {
                         <RectangleCard
                             key={index}
                             title={trip.departure + " - " + trip.destination}
-                            price={TextFormatter.formatPrice(trip.price, "USD")}
-                            dateTime={TextFormatter.formatDate(trip.date)}
-                            clickEvent={(()=> handleTripCardClick(trip))}
+                            price={trip.price}
+                            dateTime={trip.date + ", " + trip.time}
+                            clickEvent={(() => handleTripCardClick(trip))}
                         />
                     ))}
                 </div>

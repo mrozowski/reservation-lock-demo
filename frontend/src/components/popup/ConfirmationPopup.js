@@ -16,7 +16,7 @@ const ConfirmationPopup = ({text, onCancel, onConfirm}) => {
             <div className="overlay"></div>
             <div className="confirmation-popup-container ">
 
-                <div className="popup-content main-background-card">
+                <div className="popup-content main-card-background">
                     <p>{text}</p>
                     <div className="button-container">
                         <div className="">

@@ -5,13 +5,92 @@
     margin-right: auto;
 }
 
-.main-background-card{
+.main-card-background{
     border-radius: 20px;
     background: var(--background-color);
     box-shadow: 2px 4px 4px 0 rgba(0, 0, 0, 0.15);
     padding: 2rem;
     width: 100%;
     font-size: 1.3rem;
+}
+
+.main-card-page{
+    display: flex;
+    flex-direction: column;
+    margin-top: 2rem;
+}
+
+.main-card-page .title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.main-card-page .indent {
+    margin-left: 1.3rem;
+}
+
+.main-card-page .card-section {
+    margin-top: 1.3rem;
+}
+
+.main-card-page .emphasis-text{
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.main-card-page .regular-text{
+    font-size: 2rem;
+    font-weight: normal;
+}
+
+.main-card-page .column {
+    margin-right: 3rem;
+}
+
+.main-card-page .row-name{
+    margin: 1rem 0;
+    display: inline-block;
+    width: 150px;
+}
+
+.main-card-page .row{
+    display: flex;
+    align-items: center;
+}
+
+.main-card-page .error{
+    font-size: 1rem;
+    color: var(--error-color);
+}
+
+.main-card-page .divider {
+    border: 2px solid var(--gray-color);
+    margin-top: 1.3rem;
+    width: 100%;
+}
+
+.main-card-page .section-name {
+    font-size: 24px;
+    margin-top: 20px;
+}
+
+.main-card-page .section {
+    margin-top: 1.3rem;
+}
+
+.main-card-page .columns {
+    display: flex;
+    margin-top: 10px;
+}
+
+
+.main-card-page .button-section-right{
+    align-self: flex-end;
+    margin-top: 20px;
+}
+
+.right-side{
+    margin-left: auto;
 }
 
 .overlay {

@@ -1,10 +1,12 @@
 import React, {useState} from 'react';
-import ApiService from '../../services/apiService';
+import ApiService from '../../services/ApiService';
 import DefaultButton from "../../components/button/DefaultButton";
 import Input from "../../components/input/Input";
 import './ReservationDetails.css'
+import Navigator from "../../utils/Navigator";
 
-const ReservationDetailsForm = ({onSubmit}) => {
+const ReservationDetailsForm = () => {
+    const {navigateToReservationDetailsPage} = Navigator();
     const [searchQuery, setSearchQuery] = useState({
         reference: '',
         clientName: ''
@@ -19,17 +21,7 @@ const ReservationDetailsForm = ({onSubmit}) => {
     };
 
     const handleFormSubmit = async () => {
-        try {
-            const tripsData = await ApiService.getReservationDetails({
-                reference: searchQuery.reference,
-                clientName: searchQuery.clientName
-            });
-            console.log(tripsData)
-            onSubmit(tripsData)
-        } catch (error) {
-            // Handle error
-            console.log("error: " + error)
-        }
+        navigateToReservationDetailsPage(searchQuery.reference, searchQuery.clientName);
     };
 
     return (
