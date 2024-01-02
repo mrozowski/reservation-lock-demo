@@ -23,4 +23,5 @@ reservation:
   payment:
     types:
       stripe:
+        url: 'http://localhost:8095/v1/payment/intent'
         successful-payment-status: 'succeeded'

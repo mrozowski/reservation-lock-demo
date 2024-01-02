@@ -16,6 +16,7 @@ class WebConfiguration implements WebMvcConfigurer {
     registry.addMapping("/**")
         .allowedOrigins("http://localhost:3000")
         .allowedMethods("GET", "POST", "PUT", "DELETE")
-        .allowedHeaders("*");
+        .allowedHeaders("*")
+        .exposedHeaders("Authorization", "X-Session-Expiration");
   }
 }

@@ -12,7 +12,7 @@ public record ReservationPaymentProperties(Map<PaymentMethodTypes, PaymentMethod
     return types.get(PaymentMethodTypes.STRIPE);
   }
 
-  public record PaymentMethod(String successfulPaymentStatus) {
+  public record PaymentMethod(String successfulPaymentStatus, String url) {
   }
 
   enum PaymentMethodTypes {

@@ -15,7 +15,7 @@ class PaymentControllerSpec extends Specification {
   private MockMvc mockMvc
   private ReservationFacade reservationFacade = Mock()
   def properties = new ReservationPaymentProperties(
-      ["stripe": new ReservationPaymentProperties.PaymentMethod("succeeded")])
+      ["stripe": new ReservationPaymentProperties.PaymentMethod("succeeded", "url")])
   def underTest = new PaymentController(properties, reservationFacade)
 
   def setup() {
