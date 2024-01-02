@@ -4,6 +4,7 @@ import DefaultButton from "../../components/button/DefaultButton";
 import ConfirmationPopup from "../../components/popup/ConfirmationPopup";
 import ApiService from "../../services/ApiService";
 import {useParams} from "react-router-dom";
+import ReservationDetails from "../../components/reservation/ReservationDetails";
 
 
 const ReservationDetailsResult = () => {
@@ -70,60 +71,20 @@ const ReservationDetailsResult = () => {
                             <span className="reference-value emphasis-text">{details.reference}</span>
                             <div><p className="row-name">Status:</p> {details.status}</div>
                         </div>
-
-                        <div className="title card-section">Flight Details</div>
-                        <div className="columns indent">
-                            <div className="column">
-                                <div>
-                                    <p className="row-name">Departure:</p>
-                                    <span className="emphasis-text">{details.departure}</span>
-                                </div>
-                                <div>
-                                    <p className="row-name">Destination:</p>
-                                    <span className="emphasis-text">{details.destination}</span>
-                                </div>
-                                <div>
-                                    <p className="row-name">Price:</p>
-                                    <span className="regular-text">{details.price}</span>
-                                </div>
-                            </div>
-
-                            <div className="column">
-                                <div><p className="row-name">Date:</p>
-                                    <span className="emphasis-text">{details.date}</span>
-                                </div>
-                                <div>
-                                    <p className="row-name">Time:</p>
-                                    <span className="emphasis-text">{details.time}</span>
-                                </div>
-                                <div>
-                                    <p className="row-name">Seat Number:</p>
-                                    <span className="emphasis-text">{details.seatNumber}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <hr className="divider"/>
-
-                        <div>
-                            <div className="card-section title">Customer Details</div>
-                            <div className="indent"><p className="row-name">Name:</p> {details.customerName}</div>
-                        </div>
-
+                        <ReservationDetails details={details}/>
                         <div className="button-section-right">
                             <DefaultButton text="Cancel" clickEvent={handleButtonClick}></DefaultButton>
                         </div>
+                        {isPopupVisible && (
+                            <ConfirmationPopup
+                                text="Are you sure you want to cancel the reservation?"
+                                onCancel={handleCancelReservationActionCanceled}
+                                onConfirm={handleCancelReservationActionConfirmed}
+                            />
+                        )}
                     </>
                 )}
             </div>
-
-            {isPopupVisible && (
-                <ConfirmationPopup
-                    text="Are you sure you want to cancel the reservation?"
-                    onCancel={handleCancelReservationActionCanceled}
-                    onConfirm={handleCancelReservationActionConfirmed}
-                />
-            )}
         </div>
     );
 };

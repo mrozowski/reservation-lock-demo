@@ -4,6 +4,7 @@ import Input from "../../components/input/Input";
 import DefaultButton from "../../components/button/DefaultButton";
 import InputValidator from "../../utils/InputValidator";
 import Navigator from "../../utils/Navigator";
+import ReservationSummaryModel from "../../models/ReservationSummaryModel";
 
 const TripReservationPage = () => {
     const location = useLocation();
@@ -45,7 +46,8 @@ const TripReservationPage = () => {
             return;
         }
 
-        navigateToSeatSelectionPage(trip.id);
+        let reservationSummary = ReservationSummaryModel.of(trip, userData);
+        navigateToSeatSelectionPage(reservationSummary);
     }
 
     return (
@@ -64,7 +66,7 @@ const TripReservationPage = () => {
                         </div>
                         <div>
                             <p className="row-name">Price:</p>
-                            <span className="regular-text">{trip.price}</span>
+                            <span className="regular-text">{trip.displayPrice}</span>
                         </div>
                     </div>
 

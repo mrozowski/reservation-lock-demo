@@ -7,6 +7,8 @@ import ReservationDetailsForm from "./pages/reservation-details/ReservationDetai
 import ReservationDetailsResult from "./pages/reservation-details/ReservationDetailsResult";
 import TripReservationPage from "./pages/trip/TripReservationPage";
 import SeatSelectionPage from "./pages/trip/SeatSelectionPage";
+import TripReservationSummary from "./pages/trip/TripReservatinoSummary";
+import PaymentPage from "./pages/payment/PaymentPage";
 
 function App() {
     return (
@@ -16,6 +18,8 @@ function App() {
                 <Route path="/" element={<SearchPage />}/>
                 <Route path="/trips/:tripId" element={<TripReservationPage />}/>
                 <Route path="/trips/:tripId/seat-selection" element={<SeatSelectionPage />}/>
+                <Route path="/trips/:tripId/summary" element={<TripReservationSummary />}/>
+                <Route path="/payment/:reservationId" element={<PaymentPage />}/>
                 <Route path="/reservation" element={<ReservationDetailsForm />}/>
                 <Route path="/reservations/:reference/:clientName" element={<ReservationDetailsResult />}/>
             </Routes>

@@ -1,23 +1,23 @@
 import React, {useEffect, useState} from "react";
 import DefaultButton from "../../components/button/DefaultButton";
 import ApiService from "../../services/ApiService";
-import {useParams} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import Navigator from "../../utils/Navigator";
 import seatPlan from '../../assets/seat-plan-image.svg'
+import MemoryService from "../../services/MemoryService";
 
 const SeatSelectionPage = () => {
-    const {tripId} = useParams();
-    const {} = Navigator();
+    const location = useLocation();
+    const reservationSummary = location.state.reservationSummary;
+    const {navigateToReservationSummaryPage} = Navigator();
     const [options, setOptions] = useState([]);
     const [selectedOption, setSelectedOption] = useState('');
 
 
     const fetchData = async () => {
         try {
-            const seats = await ApiService.getSeats({tripId: tripId});
-            console.log("Seats ", seats);
+            const seats = await ApiService.getSeats({tripId: reservationSummary.tripId});
             setOptions(seats);
-
         } catch (error) {
             console.log("error ", error);
             // Handle error
@@ -25,13 +25,19 @@ const SeatSelectionPage = () => {
     };
 
     const handleButtonClick = () => {
-
+        if (!selectedOption) return;
+        ApiService.lockSeat(reservationSummary.tripId, selectedOption)
+            .then(response => {
+                MemoryService.storeSessionAuth(response);
+                reservationSummary.seatNumber = selectedOption;
+                navigateToReservationSummaryPage(reservationSummary);
+            })
+            .catch(error => console.log("error ", error));
     }
 
     useEffect(() => {
         fetchData();
     }, []);
-
 
 
     const handleDropdownChange = (event) => {

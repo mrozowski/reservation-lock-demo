@@ -95,7 +95,7 @@ const SearchPage = () => {
                         <RectangleCard
                             key={index}
                             title={trip.departure + " - " + trip.destination}
-                            price={trip.price}
+                            price={trip.displayPrice}
                             dateTime={trip.date + ", " + trip.time}
                             clickEvent={(() => handleTripCardClick(trip))}
                         />

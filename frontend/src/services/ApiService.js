@@ -1,4 +1,11 @@
-import {getTrips, getReservationDetails, cancelReservation, getSeats} from '../api/TripApi';
+import {
+    getTrips,
+    getReservationDetails,
+    cancelReservation,
+    getSeats,
+    processReservation,
+    createPaymentIntent, lockSeat, makeStripePayment
+} from '../api/TripApi';
 import ModelMapper from "./ModelMapper";
 
 const ApiService = {
@@ -39,6 +46,51 @@ const ApiService = {
             const data = await getSeats({tripId});
             console.log(data);
             return data;
+        } catch (error) {
+            console.error('API Service Error:', error);
+            throw error;
+        }
+    },
+
+    lockSeat: async (tripId, seatNumber) =>{
+        try{
+            const data = await lockSeat(tripId, seatNumber);
+            return ModelMapper.mapSessionAuth(data);
+        } catch (error) {
+            console.error('API Service Error:', error);
+            throw error;
+        }
+    },
+
+    processReservation: async (reservation, authorization) =>{
+        try{
+            const headers = {Authorization: authorization};
+            const data = await processReservation(reservation, headers);
+            console.log("processReservation response: ", data);
+            return ModelMapper.mapReservationConfirmation(data);
+        } catch (error) {
+            console.error('API Service Error:', error);
+            throw error;
+        }
+    },
+
+    createPaymentIntent: async (paymentIntentRequest, authorization) =>{
+        try{
+            const headers = {Authorization: authorization};
+            const data = await createPaymentIntent(paymentIntentRequest, headers);
+            console.log("Payment intent response: ", data);
+            return ModelMapper.mapPaymentIntentResponse(data);
+        } catch (error) {
+            console.error('API Service Error:', error);
+            throw error;
+        }
+    },
+
+    makeStripePayment: async (paymentDetails) =>{
+        try{
+            const request = ModelMapper.mapPaymentRequest(paymentDetails)
+            const data = await makeStripePayment(request);
+            console.log("Finished payment: ", data);
         } catch (error) {
             console.error('API Service Error:', error);
             throw error;
