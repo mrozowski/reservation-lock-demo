@@ -1,0 +1,31 @@
+.reservation-container{
+    border-radius: 20px;
+    background: rgba(153, 215, 242, 0.7);
+    box-shadow: 2px 4px 4px 0px rgba(0, 0, 0, 0.15);
+    height: 40vh;
+    width: 30vw;
+    min-width: 15rem;
+    max-width: 20rem;
+    padding: 1rem 5rem;
+    margin-top: 5rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.reservation-container > h1{
+    text-align: center;
+}
+
+.reservation-search-options{
+    display: flex;
+    flex-direction: column;
+}
+
+.button-wrapper{
+    margin: 1.5rem auto;
+}
+
+/* ------- */
+

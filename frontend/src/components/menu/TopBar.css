@@ -1,0 +1,31 @@
+.top-bar {
+    align-items: center;
+    padding: 10px 20px;
+    background-color: var(--secondary-color);
+}
+.top-bar-container{
+    justify-content: space-between;
+}
+
+.menu-buttons{
+    display: flex;
+}
+
+.menu-button{
+    display: flex;
+    text-decoration: none;
+}
+
+.menu-buttons button {
+    background-color: var(--secondary-color);
+    font-size: 1rem;
+    margin-left: 15px;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.menu-buttons button:hover {
+    background-color: var(--primary-color);
+}

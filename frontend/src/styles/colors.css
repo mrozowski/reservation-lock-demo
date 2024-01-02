@@ -1,0 +1,10 @@
+:root {
+    --primary-color: #7BCEF3;
+    --secondary-color: #FBF4EF;
+    --accent-color: #08577B;
+    --accent-hover-color: rgba(8, 87, 123, 0.85);
+    --background-color: #F5F5F5;
+    --text-color: #1E1E1E;
+    --gray-color: #C9C3BF;
+    --error-color: #d53f3f;
+}
