@@ -6,6 +6,7 @@ import com.mrozowski.seatreservation.domain.model.ReservationDetails;
 import com.mrozowski.seatreservation.domain.model.ReservationRequestCommand;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface ReservationRepository {
@@ -19,4 +20,6 @@ public interface ReservationRepository {
 
   @Transactional
   void updatePayment(PaymentConfirmationCommand command);
+
+  void cancelPendingReservations(List<Long> seatIds);
 }

@@ -12,6 +12,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -52,10 +54,12 @@ class JpaSeatRepository implements SeatRepository {
   }
 
   @Override
-  public void releaseExpiredLock() {
+  public List<Long> releaseExpiredLock() {
     log.info("Releasing expired locks");
-    int releasedExpiredLocks = seatRepository.releaseExpiredLocks();
-    log.info("Released {} expired locks", releasedExpiredLocks);
+    var currentTimestamp = OffsetDateTime.now(ZoneOffset.UTC);
+    var releasedExpiredLocksIds = seatRepository.releaseExpiredLocks(currentTimestamp);
+    log.info("Released {} expired locks", releasedExpiredLocksIds.size());
+    return releasedExpiredLocksIds;
   }
 
   private static boolean isSessionExpired(SeatEntity seatEntity) {

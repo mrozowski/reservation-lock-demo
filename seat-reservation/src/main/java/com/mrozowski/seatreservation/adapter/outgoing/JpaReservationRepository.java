@@ -14,6 +14,7 @@ import org.hibernate.HibernateException;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -70,6 +71,12 @@ class JpaReservationRepository implements ReservationRepository {
           e.getMessage(), e);
       throw new DataSourceException("Failed to update Reservation with id: " + command.productId(), e);
     }
+  }
+
+  @Override
+  public void cancelPendingReservations(List<Long> seatIds) {
+    var updated = reservationRepository.cancelPendingReservations(seatIds);
+    log.info("Canceled {} reservations due to expired session time", updated);
   }
 
   private ReservationEntity.PaymentStatus mapReservationStatus(PaymentConfirmationCommand command) {

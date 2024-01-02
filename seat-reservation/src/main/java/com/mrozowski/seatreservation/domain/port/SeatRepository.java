@@ -5,6 +5,8 @@ import com.mrozowski.seatreservation.domain.model.TripSeatDetails;
 import com.mrozowski.seatreservation.domain.model.UserSeatSessionTokenConfirmation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 public interface SeatRepository {
 
   @Transactional(readOnly = true)
@@ -16,6 +18,6 @@ public interface SeatRepository {
   UserSeatSessionTokenConfirmation confirmUserLockSeatSessionToken(String tripId,
                                                                    String seatNumber,
                                                                    String sessionToken);
-  @Transactional
-  void releaseExpiredLock();
+
+  List<Long> releaseExpiredLock();
 }

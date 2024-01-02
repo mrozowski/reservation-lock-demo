@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -27,7 +28,8 @@ interface CrudSeatRepository extends CrudRepository<SeatEntity, Long> {
                @Param("expirationDateTime") OffsetDateTime expirationDateTime);
 
   @Modifying
-  @Query("UPDATE SeatEntity s SET s.status = 'AVAILABLE'" +
-      "WHERE s.status = 'LOCKED' and s.lockExpirationTime < current_timestamp")
-  int releaseExpiredLocks();
+  @Query(value = "UPDATE seat SET status = 'AVAILABLE', lock_session_token = null, lock_expiration_time = null " +
+      "WHERE status = 'LOCKED' and lock_expiration_time < :currentTimestamp " +
+      "RETURNING id", nativeQuery = true)
+  List<Long> releaseExpiredLocks(@Param("currentTimestamp") OffsetDateTime currentTimestamp);
 }

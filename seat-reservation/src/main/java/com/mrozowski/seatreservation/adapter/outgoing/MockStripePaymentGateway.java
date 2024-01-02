@@ -5,13 +5,14 @@ import com.mrozowski.seatreservation.domain.command.InitializePaymentCommand;
 import com.mrozowski.seatreservation.domain.model.PaymentIntentDetails;
 import com.mrozowski.seatreservation.domain.port.PaymentGateway;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
 @Slf4j
 @Component
-//@Profile("payment-mock")
+@ConditionalOnMissingBean(StripePaymentGateway.class)
 class MockStripePaymentGateway implements PaymentGateway {
 
   @Override

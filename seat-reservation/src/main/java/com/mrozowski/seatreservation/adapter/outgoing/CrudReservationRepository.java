@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -22,4 +23,8 @@ interface CrudReservationRepository extends CrudRepository<ReservationEntity, Lo
   @Query("UPDATE ReservationEntity r SET r.paymentStatus = :status WHERE r.id = :reservationId")
   int updatePaymentStatus(@Param("reservationId") String reservationId,
                           @Param("status") ReservationEntity.PaymentStatus status);
+
+  @Modifying
+  @Query("UPDATE ReservationEntity r SET r.paymentStatus = 'CANCELED' WHERE r.seat.id IN :seatIds AND r.paymentStatus = 'PENDING'")
+  int cancelPendingReservations(@Param("seatIds") List<Long> seatIds);
 }
