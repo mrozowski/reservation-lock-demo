@@ -12,6 +12,7 @@ public record ReservationDetails(String reference,
                                  @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'") OffsetDateTime offsetDateTime,
                                  String seatNumber,
                                  String customerName,
+                                 int price,
                                  ReservationStatus status) {
 
 

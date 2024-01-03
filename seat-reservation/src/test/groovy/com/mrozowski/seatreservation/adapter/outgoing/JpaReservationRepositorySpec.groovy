@@ -24,11 +24,13 @@ class JpaReservationRepositorySpec extends Specification {
     def seatNumber = "A15"
     def departure = "departureA"
     def destination = "destinationB"
+    def price = 1000
     def entity = new ReservationEntity(
         id: 1L,
         createdAt: date,
         customerName: name,
         reference: reference,
+        price: price,
         paymentStatus: "CONFIRMED",
         trip: new TripEntity(id: "ABC123", departure: departure, destination: destination, date: date),
         seat: new SeatEntity(id: 1L, tripId: "tripId", seatNumber: seatNumber, status: "RESERVED")
@@ -47,6 +49,7 @@ class JpaReservationRepositorySpec extends Specification {
       it.customerName() == name
       it.destination() == destination
       it.departure() == departure
+      it.price() == price
     }
   }
 

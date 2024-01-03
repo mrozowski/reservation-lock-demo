@@ -1,5 +1,5 @@
 class ReservationDetailsModel{
-    constructor(reference, departure, destination, date, time, seatNumber, customerName, status) {
+    constructor(reference, departure, destination, date, time, seatNumber, customerName, status, displayPrice) {
         this.reference = reference;
         this.departure = departure;
         this.destination = destination;
@@ -8,6 +8,7 @@ class ReservationDetailsModel{
         this.seatNumber = seatNumber;
         this.customerName = customerName;
         this.status = status;
+        this.displayPrice = displayPrice
     }
 }
 

@@ -11,6 +11,7 @@ import StripePaymentRequest from "../api/StripePaymentRequest";
 const ModelMapper = {
     mapReservationDetails: (data) => {
         let extractedDateTime = TextFormatter.extractDateAndTime(data.offsetDateTime);
+        let displayPrice = TextFormatter.formatPrice(data.price, "USD");
         return new ReservationDetailsModel(
             data.reference,
             data.departure,
@@ -19,7 +20,8 @@ const ModelMapper = {
             extractedDateTime.formattedTime,
             data.seatNumber,
             data.customerName,
-            data.status
+            data.status,
+            displayPrice
         );
     },
 

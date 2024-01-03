@@ -97,6 +97,7 @@ class JpaReservationRepository implements ReservationRepository {
         .destination(tripEntity.getDestination())
         .departure(tripEntity.getDeparture())
         .seatNumber(seatEntity.getSeatNumber())
+        .price(reservationEntity.getPrice())
         .build();
   }
 }

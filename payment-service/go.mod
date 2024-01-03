@@ -1,5 +1,5 @@
 module payment-service
 
-go 1.15
+go 1.21
 
 require github.com/google/uuid v1.5.0
