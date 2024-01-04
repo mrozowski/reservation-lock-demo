@@ -1,10 +1,10 @@
 # Demo Reservation System
 
 ## Introduction
-Greetings, My name is Simon, and I would like to share insights into the project I've been working on — a Reservation System designed to streamline the booking process for an airline company. In here, I'll provide an overview of the technologies used, the user interface, and the process of bringing this project to life.
+I started this project to practice technologies, design architecture, and development methodologies such as BDD and TDD. Here I'll show the overview of used technologies, the user interface, and the process of bringing this project to life.
 
 ## Project Overview
-The project consists of 3 main components, Reservation Service, Payment Service, and Frontend.
+The project consists of 3 main components, `Reservation Service`, `Payment Service`, and `Frontend`.
 
 <img src="https://github.com/mrozowski/reservation-lock-demo/assets/67066372/d37b18a9-4a73-4c2c-947d-46f10577f6cb" alt="main-project-diagram" width="70%"/>
 
@@ -14,7 +14,7 @@ The project consists of 3 main components, Reservation Service, Payment Service,
 - Making payment
 - Checking reservation details
 - Canceling reservation
-- Seat Locking - to give a user enough time to finish payment without worrying about someone else reserving this same seat 
+- Seat Locking
 
 ### Technologies Used
 The Reservation System uses a robust stack of technologies:
@@ -33,12 +33,12 @@ The Reservation System uses a robust stack of technologies:
 
 ### Payment process
 I tried to make the payment process similar to the Stripe flow
-1. The user sends a request to backend to make a payment.
-2. Backend calls Payment Service to create new Payment intent with client secret key.
-3. Backend returns client secret to Frontend user.
-4. The frontend user calls Payment Service to make a payment using a bank card.
-5. After payment is finished Payment Service automatically calls Backend using webhook.
-6. Backend finish processing payment.
+1. The user decides to reserve a ticket. That sends a request to the backend for payment.
+2. Backend contacts a Payment Service to generate a special key for the payment (client secret)
+3. The backend then sends this key back to the user.
+4. The user uses this key to make a secure payment with their credit card through the Payment Service.
+5. Once the payment is complete, the Payment Service automatically notifies the backend using a webhook.
+6. Backend finalizes the payment process.
 
 <img src="https://github.com/mrozowski/reservation-lock-demo/assets/67066372/c13ef325-c0be-4c37-ba75-f20be855132b" alt="main-project-diagram" width="100%"/>
 
