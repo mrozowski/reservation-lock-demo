@@ -20,4 +20,4 @@ spec:
             - containerPort: 8080
           envFrom:
             - configMapRef:
-                name: reservation-system-config
+                name: reservation-service-config

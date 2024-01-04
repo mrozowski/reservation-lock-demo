@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reservation-frontend
+spec:
+  selector:
+    matchLabels:
+      app: reservation-frontend
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: reservation-frontend
+    spec:
+      containers:
+        - name: reservation-frontend
+          image: mrozowski/reservation-frontend:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: frontend-service-config
