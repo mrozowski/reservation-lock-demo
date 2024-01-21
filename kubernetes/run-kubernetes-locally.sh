@@ -34,6 +34,13 @@ validate_prerequisite() {
         display_prerequisite
         exit 8
     fi
+
+  if ! command -v docker &> /dev/null
+    then
+        err "Docker could not be found. Please install required prerequisite before running the script"
+        display_prerequisite
+        exit 8
+  fi
 }
 
 start_minikube() {
@@ -63,22 +70,21 @@ create_frontend_image(){
   docker build ../fronted/. -t mrozowski/reservation-frontend-demo
 }
 
+create_nginx_image(){
+  eval "$(minikube -p minikube docker-env)"
+  print "Building nginx image in minikube cluster"
+  docker build ./nginx/. -t nginx
+}
+
 create_postgres_image(){
   if [[ "$(docker image inspect postgres:12 >/dev/null)" == "" ]]; then
     # Postgres image exist on host. Copy it to minikube instead of re-downloading it again
-    docker save -o postgres-image-temp.tar postgres:12
-    eval "$(minikube -p minikube docker-env)"
-    docker load -i postgres-image-temp.tar
+    minikube image load postgres:12
   fi
 }
 
 run_kubernetes_configuration_files() {
-  kubectl apply -f charts/postgres-persistent-volume.yaml
-  kubectl apply -f charts/postgres-volume-claim.yaml
-  kubectl apply -f charts/postgres-deployment.yaml
-  kubectl apply -f charts/postgres-service.yaml
-  kubectl apply -f charts/config-map.yaml
-  kubectl apply -f charts/reservation-backend-deployment.yaml
+  kubectl apply -f charts/
 }
 
 validate_prerequisite

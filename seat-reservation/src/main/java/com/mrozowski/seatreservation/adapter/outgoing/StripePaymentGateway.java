@@ -31,9 +31,13 @@ class StripePaymentGateway implements PaymentGateway {
       var jsonMessage = writer.writeValueAsString(command);
       var respond = restTemplate.postForEntity(paymentProperties.getStripe().url(), jsonMessage, String.class);
 
+      log.info("Received Payment Intend with client secret");
       return objectMapper.readValue(respond.getBody(), PaymentIntentDetails.class);
     } catch (JsonProcessingException e) {
       log.error("Error during parsing json message", e);
+      throw new RuntimeException(e);
+    } catch (Exception e){
+      log.error("Error during calling payment service", e);
       throw new RuntimeException(e);
     }
   }

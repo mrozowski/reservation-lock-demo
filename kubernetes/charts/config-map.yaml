@@ -4,5 +4,5 @@ metadata:
   name: reservation-service-config
 data:
   spring.datasource.url: "jdbc:postgresql://postgres:5432/resdb"
-  reservation.payment.types.stripe.url: 'http://payment-service/v1/payment/intent'
+  reservation.payment.types.stripe.url: 'http://payment-service:8095/v1/payment/intent'
   SPRING_PROFILES_ACTIVE: "test, prod"

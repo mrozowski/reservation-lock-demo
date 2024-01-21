@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: frontend-service-config
 data:
-  REACT_APP_RESERVATION_API_URL: "http://reservation-backend:8080"
-  REACT_APP_PAYMENT_API_URL: "http://payment-service:8095"
+  REACT_APP_RESERVATION_API_URL: "http://192.168.49.2:31000/api/"
+  REACT_APP_PAYMENT_API_URL: "http://192.168.49.2:31000/payment-gate/"

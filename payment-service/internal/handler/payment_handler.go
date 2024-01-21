@@ -7,6 +7,7 @@ import (
 	"github.com/google/uuid"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	"payment-service/internal/model"
@@ -14,9 +15,17 @@ import (
 )
 
 const (
-	WebhookUrl = "http://localhost:8080/v1/payment/stripe/webhook"
+	endpoint = "v1/payment/stripe/webhook"
 )
 
+var WebhookBaseUrl string
+
+func init() {
+	WebhookBaseUrl = os.Getenv("PAYMENT_WEBHOOK_BASE_URL")
+	if WebhookBaseUrl == "" {
+		WebhookBaseUrl = "http://localhost:8080/"
+	}
+}
 
 func CreatePaymentIntentHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
@@ -47,7 +56,6 @@ func CreatePaymentIntentHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("Sending respond with created payment intent for productId: %s", paymentIntent.ProductId)
 	fmt.Fprintf(w, string(jsonRespond), clientSecret)
 }
-
 
 // MakePaymentHandler handles the processing of payments.
 func MakePaymentHandler(w http.ResponseWriter, r *http.Request) {
@@ -105,7 +113,7 @@ func sendWebhookAsync(paymentRequest model.PaymentRequest) {
 
 	webhookPayloadJSON, _ := json.Marshal(webhookPayload)
 
-	resp, err := http.Post(WebhookUrl, "application/json", bytes.NewBuffer(webhookPayloadJSON))
+	resp, err := http.Post(WebhookBaseUrl+endpoint, "application/json", bytes.NewBuffer(webhookPayloadJSON))
 	if err != nil {
 		fmt.Printf("Webhook call failed: %v\n", err)
 		return
