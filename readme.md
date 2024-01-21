@@ -1,12 +1,12 @@
 # Demo Reservation System
 
 ## Introduction
-Greetings, My name is Simon, and I would like to share insights into the project I've been working on — a Reservation System designed to streamline the booking process for an airline company. In here, I'll provide an overview of the technologies used, the user interface, and the process of bringing this project to life.
+I started this project to practice technologies, design architecture, and development methodologies such as BDD and TDD. Here I'll show the overview of used technologies, the user interface, and the process of bringing this project to life.
 
 ## Project Overview
-The project consists of 3 main components, Reservation Service, Payment Service, and Frontend.
+The project consists of 3 main components, `Reservation Service`, `Payment Service`, and `Frontend`.
 
-<img src="https://github.com/mrozowski/reservation-lock-demo/assets/67066372/e47d31ea-5bbe-4de3-a432-ed5598815388" alt="main-project-diagram" width="70%"/>
+<img src="https://github.com/mrozowski/reservation-lock-demo/assets/67066372/d37b18a9-4a73-4c2c-947d-46f10577f6cb" alt="main-project-diagram" width="70%"/>
 
 ### Main features
 - Searching trips
@@ -14,6 +14,7 @@ The project consists of 3 main components, Reservation Service, Payment Service,
 - Making payment
 - Checking reservation details
 - Canceling reservation
+- Seat Locking
 
 ### Technologies Used
 The Reservation System uses a robust stack of technologies:
@@ -24,20 +25,20 @@ The Reservation System uses a robust stack of technologies:
 | Spring Boot 3.2.0   |                 | axios    | Kubernetes |
 | Postgresql 12       |                 |          | Minikube   |
 | Liquibase           |                 |          | Intellij   |
-| Hibernate           |                 |          |            |
-| Cucumber            |                 |          |            |
+| Hibernate           |                 |          | Figma      |
+| Cucumber            |                 |          | Whimsical  |
 | Spock               |                 |          |            |
 | Testcontainers      |                 |          |            |
 
 
 ### Payment process
-I tried to make the payment process similar to Stripe 
-1. User sends request to backend for making payment
-2. Backend calls Payment Service to create new Payment intent with client secret key
-3. Backend returns client secret to Frontend user
-4. The frontend user calls Payment Service to make a payment using a bank card
-5. After payment is finished Payment Service automatically calls Backend using webhook
-6. Backend finish processing payment.
+I tried to make the payment process similar to the Stripe flow
+1. The user decides to reserve a ticket. That sends a request to the backend for payment.
+2. Backend contacts a Payment Service to generate a special key for the payment (client secret)
+3. The backend then sends this key back to the user.
+4. The user uses this key to make a secure payment with their credit card through the Payment Service.
+5. Once the payment is complete, the Payment Service automatically notifies the backend using a webhook.
+6. Backend finalizes the payment process.
 
 <img src="https://github.com/mrozowski/reservation-lock-demo/assets/67066372/c13ef325-c0be-4c37-ba75-f20be855132b" alt="main-project-diagram" width="100%"/>
 
@@ -79,3 +80,4 @@ For the project implementation I used **Domain-Driven Design (DDD)** approach, a
 5. **Kubernetes**
    - Kubernetes is a very common way of managing services so I wanted to use it as well in my project. In this case, I use Minikube to run it locally.
    - I created a docker image of my Spring Boot, React, and Go apps and ran it on the Kubernetes cluster.
+   - I prepared Manifest yaml files that can be found in `/kubernetes/chars/` directory
