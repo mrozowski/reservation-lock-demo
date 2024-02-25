@@ -81,3 +81,4 @@ For the project implementation I used **Domain-Driven Design (DDD)** approach, a
    - Kubernetes is a very common way of managing services so I wanted to use it as well in my project. In this case, I use Minikube to run it locally.
    - I created a docker image of my Spring Boot, React, and Go apps and ran it on the Kubernetes cluster.
    - I prepared Manifest yaml files that can be found in `/kubernetes/chars/` directory
+   - More about how to run project on Kubernetes locally here - [instruction](./kubernetes/kubernetesInstruction.md)
